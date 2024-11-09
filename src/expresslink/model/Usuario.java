@@ -1,30 +1,33 @@
-//@Chibi
+//Chibi
 
 package expresslink.model;
 
 public class Usuario {
-    private int identificador;
+    private int id;
     private String nombre;
     private String correo;
     private String contrasenia;
     private String telefono;
-    public enum TipoUsuario {
+
+    public enum TipoUsuario { //Roles del usuario
         CLIENTE,
         TRANSPORTISTA,
         SUCURSAL,
         ADMIN
     }
-//Constructor
-    public Usuario(int identificador, String nombre, String correo, String contrasenia, String telefono) {
-        this.identificador = identificador;
+
+    // Constructor
+    public Usuario(int id, String nombre, String correo, String contrasenia, String telefono) {
+        this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.telefono = telefono;
     }
-//Get
-    public int getIdentificador() {
-        return identificador;
+
+    // Getters
+    public int getId() {
+        return id;
     }
 
     public String getNombre() {
@@ -42,10 +45,10 @@ public class Usuario {
     public String getTelefono() {
         return telefono;
     }
-    //Set
 
-    public void setIdentificador(int identificador) {
-        this.identificador = identificador;
+    // Setters
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNombre(String nombre) {
@@ -63,13 +66,12 @@ public class Usuario {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    
-    
+
     @Override
-    
+
     public String toString() {
         return "Usuario{" +
-               "identificador=" + identificador +
+               "id=" + id +
                ", nombre='" + nombre + '\'' +
                ", correo='" + correo + '\'' +
                ", contrasenia='" + contrasenia + '\'' +
