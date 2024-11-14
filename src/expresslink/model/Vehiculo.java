@@ -2,6 +2,8 @@
 
 package expresslink.model;
 
+import expresslink.model.enums.TipoVehiculo;
+
 public class Vehiculo {
     private String placa;
     private TipoVehiculo tipo;
@@ -9,23 +11,22 @@ public class Vehiculo {
     private boolean enServicio;
     private Transportista conductor;
 
-    public enum TipoVehiculo{
-        CAMION,
-        FURGONETA,
-        MOTO
-    }
-        public void asignarConductor(Transportista conductor) {
+    public void asignarConductor(Transportista conductor) {
         this.conductor = conductor;
-        this.enServicio = true; // Opcional, si deseas marcar el vehículo como "en servicio" al asignar un conductor
+        this.enServicio = true; // Opcional, si deseas marcar el vehículo como "en servicio" al asignar un
+                                // conductor
     }
-    public Vehiculo(String placa, TipoVehiculo tipo, double capacidadMaxima, boolean enServicio, Transportista conductor) {
+
+    public Vehiculo(String placa, TipoVehiculo tipo, double capacidadMaxima, boolean enServicio,
+            Transportista conductor) {
         this.placa = placa;
         this.tipo = tipo;
         this.capacidadMaxima = capacidadMaxima;
         this.enServicio = enServicio;
         this.conductor = conductor;
     }
-//Get
+
+    // Get
     public String getPlaca() {
         return placa;
     }
@@ -45,7 +46,8 @@ public class Vehiculo {
     public Transportista getConductor() {
         return conductor;
     }
-//Set
+
+    // Set
     public void setPlaca(String placa) {
         this.placa = placa;
     }

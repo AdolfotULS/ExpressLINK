@@ -2,27 +2,24 @@
 
 package expresslink.model;
 
+import expresslink.model.enums.TipoUsuario;
+
 public class Usuario {
     private int id;
     private String nombre;
     private String correo;
     private String contrasenia;
     private String telefono;
-
-    public enum TipoUsuario { //Roles del usuario
-        CLIENTE,
-        TRANSPORTISTA,
-        SUCURSAL,
-        ADMIN
-    }
+    private TipoUsuario rol;
 
     // Constructor
-    public Usuario(int id, String nombre, String correo, String contrasenia, String telefono) {
+    public Usuario(int id, String nombre, String correo, String contrasenia, String telefono, TipoUsuario rol) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.telefono = telefono;
+        this.rol = rol;
     }
 
     // Getters
@@ -68,14 +65,15 @@ public class Usuario {
     }
 
     @Override
-
     public String toString() {
         return "Usuario{" +
-               "id=" + id +
-               ", nombre='" + nombre + '\'' +
-               ", correo='" + correo + '\'' +
-               ", contrasenia='" + contrasenia + '\'' +
-               ", telefono='" + telefono + '\'' +
-               '}';
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", contrasenia='" + contrasenia + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", rol=" + rol +
+                '}';
     }
+
 }

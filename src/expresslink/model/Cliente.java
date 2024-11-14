@@ -5,13 +5,15 @@ package expresslink.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import expresslink.model.enums.TipoUsuario;
+
 public class Cliente extends Usuario {
     private String direccion;
     private List<Pedido> historialPedidos;
 
     // Constructor
     public Cliente(int id, String nombre, String correo, String contrasenia, String telefono, String direccion) {
-        super(id, nombre, correo, contrasenia, telefono); // Llama al constructor de la clase padre
+        super(id, nombre, correo, contrasenia, telefono, TipoUsuario.CLIENTE); // Llama al constructor de la clase padre
         this.direccion = direccion;
         this.historialPedidos = new ArrayList<>(); // Inicializa la lista de pedidos
     }
