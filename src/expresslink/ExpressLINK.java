@@ -1,15 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package expresslink;
 
 import expresslink.model.Usuario;
 
-/**
- *
- * @author SheratoD
- */
+//@author SheratoD
+
 public class ExpressLINK {
 
     /**
@@ -19,5 +14,4 @@ public class ExpressLINK {
         // TODO code application logic here
         Usuario test = new Usuario("s");
     }
-    
 }
