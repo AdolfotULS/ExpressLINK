@@ -1,7 +1,7 @@
 package expresslink.view.components;
 
 import javax.swing.*;
-import expresslink.model.Pedido.EstadoPedido;
+import expresslink.model.enums.*;
 import java.awt.*;
 
 public class PedidoCard extends JPanel {

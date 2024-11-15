@@ -1,6 +1,9 @@
 package expresslink.view.login;
 
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
+import expresslink.model.enums.*;
 import java.awt.*;
 
 public class LoginView extends JFrame {
@@ -94,3 +97,4 @@ public class LoginView extends JFrame {
         // Ejecutar la interfaz en el hilo de eventos de Swing
         SwingUtilities.invokeLater(LoginView::new);
     }
+}
