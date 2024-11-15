@@ -5,6 +5,8 @@ package expresslink.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import expresslink.model.enums.TipoUsuario;
+
 public class Transportista extends Usuario {
     private String licencia;
     private boolean disponible;
@@ -13,7 +15,7 @@ public class Transportista extends Usuario {
 
     // Constructor
     public Transportista(int id, String nombre, String correo, String contrasenia, String telefono, String licencia, boolean disponible) {
-        super(id, nombre, correo, contrasenia, telefono); // Llama al constructor de la clase padre
+        super(id, nombre, correo, contrasenia, telefono, TipoUsuario.TRANSPORTISTA); // Llama al constructor de la clase padre
         this.licencia = licencia;
         this.disponible = disponible;
         this.pedidosActuales = new ArrayList<>(); // Inicializa la lista

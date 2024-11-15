@@ -94,4 +94,3 @@ public class LoginView extends JFrame {
         // Ejecutar la interfaz en el hilo de eventos de Swing
         SwingUtilities.invokeLater(LoginView::new);
     }
-}
