@@ -4,6 +4,9 @@ package expresslink.model;
 
 import java.util.Date;
 import java.util.List;
+
+import expresslink.model.enums.EstadoPedido;
+
 import java.util.ArrayList;
 
 public class Pedido {
@@ -27,19 +30,11 @@ public class Pedido {
     private boolean requiereTransporte;
     private int intentosEntrega;
 
-    public enum EstadoPedido{
-        INGRESADO,
-        RECOLECTANDO,
-        EN_TRANSITO,
-        EN_SURCURSAL_DESTINO,
-        ASIGNADO_TRANSPORTISTA,
-        EN_CAMINO,
-        ENTREGADO,
-        NO_ENTREGADO,
-        CANCELADO
-    }
-//Constructor
-    public Pedido(String numeroSeguimiento, Cliente remitente, String destinatario, String direccionDestino, String ciudadDestino, double peso, double alto, double ancho, double largo, double costo, EstadoPedido estado, Date fechaCreacion, Date fehcaEstimada, Sucursal sucuralOrigen, Sucursal sucuralDestino, Transportista transportista, boolean requiereTransporte, int intentosEntrega) {
+    // Constructor
+    public Pedido(String numeroSeguimiento, Cliente remitente, String destinatario, String direccionDestino,
+            String ciudadDestino, double peso, double alto, double ancho, double largo, double costo,
+            EstadoPedido estado, Date fechaCreacion, Date fehcaEstimada, Sucursal sucuralOrigen,
+            Sucursal sucuralDestino, Transportista transportista, boolean requiereTransporte, int intentosEntrega) {
         this.numeroSeguimiento = numeroSeguimiento;
         this.remitente = remitente;
         this.destinatario = destinatario;
@@ -59,25 +54,36 @@ public class Pedido {
         this.requiereTransporte = requiereTransporte;
         this.intentosEntrega = intentosEntrega;
     }
-        //Echale un ojo Adolfito
-        public double calcularCosto() {
-        double volumen = alto * ancho * largo;
-        double costoBase = 1000;
-        this.costo = costoBase + (peso * 10) + (volumen * 0.05); // Ejemplo de fórmula de cálculo
+
+    // Calculo del Costo de Envio
+    public double calcularCosto() {
+        double volumen = alto * ancho * largo; // Calculo del VOlumen
+        double costoBase = 1000; // Costo base fijo para el envío
+        double costoPorPeso = peso * 10; // Costo según el peso del paquete
+        double pesoVolumetrico = volumen / 5000;
+        double costoPorVolumen = Math.max(pesoVolumetrico, peso) * 8; // Escoge el mayor entre peso real y peso
+                                                                      // volumétrico
+
+        double costoTransporte = requiereTransporte ? 200 : 0;
+
+        // Cálculo final del costo
+        this.costo = costoBase + costoPorPeso + costoPorVolumen + costoTransporte;
         return this.costo;
     }
-        //Literal Acualiza estado
-        public void actualizarEstado(EstadoPedido nuevoEstado) {
+
+    // Literal Acualiza estado
+    public void actualizarEstado(EstadoPedido nuevoEstado) {
         this.estado = nuevoEstado;
     }
-     //Asignacion del transportista
+
+    // Asignacion del transportista
     public void asignarTransportista(Transportista transportista) {
         this.transportista = transportista;
         this.estado = EstadoPedido.ASIGNADO_TRANSPORTISTA;
         this.requiereTransporte = true; // Asigna el valor según la lógica de negocio
     }
-    //Get
 
+    // Get
     public String getNumeroSeguimiento() {
         return numeroSeguimiento;
     }
@@ -149,7 +155,7 @@ public class Pedido {
     public int getIntentosEntrega() {
         return intentosEntrega;
     }
-    //Set
+    // Set
 
     public void setNumeroSeguimiento(String numeroSeguimiento) {
         this.numeroSeguimiento = numeroSeguimiento;
@@ -223,4 +229,3 @@ public class Pedido {
         this.intentosEntrega = intentosEntrega;
     }
 }
-
