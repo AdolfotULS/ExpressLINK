@@ -22,6 +22,14 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public Usuario(int id, String nombre, String correo, String telefono, TipoUsuario rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
+
     // Getters
     public int getId() {
         return id;
