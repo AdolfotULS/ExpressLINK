@@ -97,6 +97,10 @@ public class RegisterView extends JFrame {
         setVisible(true);
     }
 
+    void Boton() {
+        // ESTE ES EL BOTON DE REGISTRO
+    }           
+
     public static void main(String[] args) {
         // Ejecutar la interfaz en el hilo de eventos de Swing
         SwingUtilities.invokeLater(RegisterView::new);
