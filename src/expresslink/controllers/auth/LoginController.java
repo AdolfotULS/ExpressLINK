@@ -55,7 +55,11 @@ public class LoginController {
     }
 
     public void manejarRecuperarContrasena() {
-        mostrarInformacion("Funcionalidad de recuperación de contraseña en desarrollo", "Recuperar Contraseña");
+        // Abrir ventana de recuperación de contraseña
+        ForgotPasswordView forgotPasswordView = new ForgotPasswordView();
+        ForgotPasswordController forgotPasswordController = new ForgotPasswordController(forgotPasswordView);
+        forgotPasswordView.setVisible(true);
+        vista.dispose(); // Cerrar ventana de login
     }
 
     private void abrirDashboardSegunRol() {

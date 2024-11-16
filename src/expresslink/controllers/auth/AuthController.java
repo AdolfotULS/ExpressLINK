@@ -104,6 +104,44 @@ public class AuthController {
         }
     }
 
+    public String recuperarContrasena(String email) throws SQLException {
+        String query = "SELECT password FROM usuario WHERE email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, email);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String password = rs.getString("password");
+                    return enmascararContrasena(password);
+                }
+                throw new SQLException("No se encontró ningún usuario con ese email");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al recuperar la contraseña: " + e.getMessage());
+        }
+    }
+
+    private String enmascararContrasena(String password) {
+        if (password == null || password.isEmpty()) {
+            return "";
+        }
+
+        int longitud = password.length();
+        int mitad = longitud / 2;
+
+        // Mostrar la primera mitad y reemplazar el resto con asteriscos
+        StringBuilder resultado = new StringBuilder();
+        resultado.append(password.substring(0, mitad));
+        for (int i = mitad; i < longitud; i++) {
+            resultado.append('*');
+        }
+
+        return resultado.toString();
+    }
+
     public boolean validarCredenciales(String email, String password) {
         try {
             return inicioSesion(email, password) != null;

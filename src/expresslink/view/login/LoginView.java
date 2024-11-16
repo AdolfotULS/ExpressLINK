@@ -61,7 +61,7 @@ public class LoginView extends JFrame {
 
         // Campo de texto para el usuario
         userField = new JTextField(15);
-        userField.setBorder(BorderFactory.createTitledBorder("Usuario"));
+        userField.setBorder(BorderFactory.createTitledBorder("Email"));
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         panelLogin.add(userField, gbc);
@@ -158,13 +158,5 @@ public class LoginView extends JFrame {
     public void limpiarCampos() {
         userField.setText("");
         passwordField.setText("");
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LoginView vista = new LoginView();
-            LoginController controlador = new LoginController(vista);
-            vista.setVisible(true);
-        });
     }
 }
