@@ -33,43 +33,74 @@ public class AuthController {
 
     public boolean registrarUsuario(String nombre, String email, String password, String telefono, TipoUsuario rol)
             throws SQLException {
-        String query = "INSERT INTO usuario (nombre, email, password, telefono, rol) VALUES (?, ?, ?, ?, ?)";
+        Connection conn = null;
+        PreparedStatement checkStmt = null;
+        PreparedStatement insertStmt = null;
+        ResultSet rs = null;
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false); // Iniciamos una transacción
 
-            // Primero verificar si el email ya existe
-            if (emailExiste(email)) {
+            // Primero verificamos si el email existe
+            String checkQuery = "SELECT COUNT(*) FROM usuario WHERE email = ?";
+            checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setString(1, email);
+            rs = checkStmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
                 throw new SQLException("El email ya está registrado");
             }
 
-            stmt.setString(1, nombre);
-            stmt.setString(2, email);
-            stmt.setString(3, password); // En producción usar hash
-            stmt.setString(4, telefono);
-            stmt.setString(5, rol.toString());
+            // Si no existe, procedemos con el registro
+            String insertQuery = "INSERT INTO usuario (nombre, email, password, telefono, rol) VALUES (?, ?, ?, ?, ?)";
+            insertStmt = conn.prepareStatement(insertQuery);
+            insertStmt.setString(1, nombre);
+            insertStmt.setString(2, email);
+            insertStmt.setString(3, password);
+            insertStmt.setString(4, telefono);
+            insertStmt.setString(5, rol.toString());
 
-            int filasAfectadas = stmt.executeUpdate();
+            int filasAfectadas = insertStmt.executeUpdate();
+
+            conn.commit(); // Confirmamos la transacción
             return filasAfectadas > 0;
+
         } catch (SQLException e) {
-            throw new SQLException("Error durante el registro: " + e.getMessage(), e);
-        }
-    }
-
-    private boolean emailExiste(String email) throws SQLException {
-        String query = "SELECT COUNT(*) FROM usuario WHERE email = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, email);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
+            if (conn != null) {
+                try {
+                    conn.rollback(); // Si hay error, revertimos la transacción
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-                return false;
             }
+            throw new SQLException("Error durante el registro: " + e.getMessage(), e);
+        } finally {
+            // Cerramos todos los recursos en orden inverso
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if (checkStmt != null)
+                try {
+                    checkStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if (insertStmt != null)
+                try {
+                    insertStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
         }
     }
 

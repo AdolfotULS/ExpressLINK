@@ -73,6 +73,7 @@ public class RegisterView extends JFrame {
         // Campo teléfono
         telefonoField = new JTextField(15);
         telefonoField.setBorder(BorderFactory.createTitledBorder("Teléfono"));
+        telefonoField.setText("+56");
         gbc.gridy = 3;
         registerPanel.add(telefonoField, gbc);
 
