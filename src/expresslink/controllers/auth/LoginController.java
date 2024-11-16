@@ -47,7 +47,11 @@ public class LoginController {
     }
 
     public void manejarRegistro() {
-        mostrarInformacion("Funcionalidad de registro en desarrollo", "Registro");
+        // Abrir ventana de registro
+        RegisterView registerView = new RegisterView();
+        RegisterController registerController = new RegisterController(registerView);
+        registerView.setVisible(true);
+        vista.dispose(); // Cerrar ventana de login
     }
 
     public void manejarRecuperarContrasena() {
