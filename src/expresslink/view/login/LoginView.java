@@ -125,6 +125,7 @@ public class LoginView extends JFrame {
     }
 
     private void iniciarSesion() {
+        // INICIAR SESSION
         if (controlador != null) {
             controlador.manejarInicioSesion(
                     userField.getText(),
@@ -133,12 +134,14 @@ public class LoginView extends JFrame {
     }
 
     private void recuperarContrasena() {
+        // ACA DEBERIA DE IR LOGICA DE RECUPERAR CONTRASENA
         if (controlador != null) {
             controlador.manejarRecuperarContrasena();
         }
     }
 
     private void registrarUsuario() {
+        // ACA DEBERIA IR LOGICA REGISTRAR
         if (controlador != null) {
             controlador.manejarRegistro();
         }

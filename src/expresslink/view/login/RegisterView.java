@@ -25,7 +25,7 @@ public class RegisterView extends JFrame {
         registerPanel.setBackground(Color.WHITE);
         registerPanel.setPreferredSize(new Dimension(300, 300));
         registerPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 10, 5, 10);
@@ -37,7 +37,7 @@ public class RegisterView extends JFrame {
         titleLabel.setOpaque(true);
         titleLabel.setBackground(new Color(33, 150, 243)); // Fondo azul
         titleLabel.setPreferredSize(new Dimension(280, 30));
-        
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -46,7 +46,7 @@ public class RegisterView extends JFrame {
         // Campo de texto para el usuario
         JTextField userField = new JTextField(15);
         userField.setBorder(BorderFactory.createTitledBorder("Usuario"));
-        
+
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         registerPanel.add(userField, gbc);
@@ -54,21 +54,21 @@ public class RegisterView extends JFrame {
         // Campo de texto para el correo electronico
         JTextField emailField = new JTextField(15);
         emailField.setBorder(BorderFactory.createTitledBorder("Correo Electronico"));
-        
+
         gbc.gridy = 2;
         registerPanel.add(emailField, gbc);
 
         // Campo de texto para la contraseña
         JPasswordField passwordField = new JPasswordField(15);
         passwordField.setBorder(BorderFactory.createTitledBorder("Contraseña"));
-        
+
         gbc.gridy = 3;
         registerPanel.add(passwordField, gbc);
 
         // Campo de texto para confirmar la contraseña
         JPasswordField confirmPasswordField = new JPasswordField(15);
         confirmPasswordField.setBorder(BorderFactory.createTitledBorder("Confirmar Contraseña"));
-        
+
         gbc.gridy = 4;
         registerPanel.add(confirmPasswordField, gbc);
 
@@ -76,7 +76,7 @@ public class RegisterView extends JFrame {
         JButton registerButton = new JButton("Registrar");
         registerButton.setBackground(new Color(33, 150, 243));
         registerButton.setForeground(Color.WHITE);
-        
+
         gbc.gridy = 5;
         gbc.gridwidth = 2;
         registerPanel.add(registerButton, gbc);
@@ -99,7 +99,7 @@ public class RegisterView extends JFrame {
 
     void Boton() {
         // ESTE ES EL BOTON DE REGISTRO
-    }           
+    }
 
     public static void main(String[] args) {
         // Ejecutar la interfaz en el hilo de eventos de Swing

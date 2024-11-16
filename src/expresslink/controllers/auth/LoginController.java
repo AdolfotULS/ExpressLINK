@@ -1,7 +1,9 @@
 package expresslink.controllers.auth;
 
 import expresslink.model.Usuario;
+import expresslink.view.login.ForgotPasswordView;
 import expresslink.view.login.LoginView;
+import expresslink.view.login.RegisterView;
 import expresslink.view.cliente.ClienteDashboard;
 import expresslink.view.transportista.TransportistaDashboard;
 import expresslink.view.sucursal.SucursalDashboard;
@@ -33,6 +35,7 @@ public class LoginController {
                 vista.limpiarCampos();
                 abrirDashboardSegunRol();
                 vista.dispose(); // Cerrar ventana de login
+                mostrarInformacion("Usted ha Iniciado session como " + email, "Exitoso");
             } else {
                 mostrarError("Credenciales inválidas");
             }
