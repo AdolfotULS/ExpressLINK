@@ -15,9 +15,9 @@ public class ClienteDashboard extends JFrame {
 
     // Paneles principales
     private JPanel panelMisPedidos;
-    private JPanel panelSeguimiento;
+    private SeguimientoPanel panelSeguimiento;
     private JPanel panelHistorial;
-    private JPanel panelPerfil;
+    private PerfilPanel panelPerfil;
 
     // Colores
     private static final Color COLOR_PRIMARY = new Color(33, 150, 243); // Azul
@@ -107,7 +107,12 @@ public class ClienteDashboard extends JFrame {
     private JButton createNavButton(String text, String cardName) {
         JButton button = new JButton(text);
         styleButton(button);
-        button.addActionListener(e -> cardLayout.show(cardPanel, cardName));
+        button.addActionListener(e -> {
+            cardLayout.show(cardPanel, cardName);
+            if (cardName.equals("SEGUIMIENTO")) {
+                panelSeguimiento.resetBusqueda(); // Limpiar búsqueda anterior si existe
+            }
+        });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         return button;
     }
@@ -139,26 +144,26 @@ public class ClienteDashboard extends JFrame {
     }
 
     private void initializePanels() {
-        // Panel de Mis Pedidos
+        // Panel de Mis Pedidos (Temporal hasta implementar MisPedidosPanel)
         panelMisPedidos = new JPanel();
         panelMisPedidos.setBackground(COLOR_BACKGROUND);
         panelMisPedidos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // TODO: Implementar contenido
+        // TODO: Implementar MisPedidosPanel
 
         // Panel de Seguimiento
-        panelSeguimiento = new PanelSeguimiento();
+        panelSeguimiento = new SeguimientoPanel();
 
-        // Panel de Historial
+        // Panel de Perfil
+        panelPerfil = new PerfilPanel(usuario);
+
+        // Panel de Historial (Temporal hasta implementar HistorialPanel)
         panelHistorial = new JPanel();
         panelHistorial.setBackground(COLOR_BACKGROUND);
         panelHistorial.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // TODO: Implementar contenido
+        // TODO: Implementar HistorialPanel
 
         // Panel de Perfil
-        panelPerfil = new JPanel();
-        panelPerfil.setBackground(COLOR_BACKGROUND);
-        panelPerfil.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // TODO: Implementar contenido
+        panelPerfil = new PerfilPanel(usuario);
     }
 
     private void handleLogout() {
@@ -170,40 +175,8 @@ public class ClienteDashboard extends JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             dispose();
-            // TODO: Implementar lógica de cierre de sesión
+            // TODO: Implementar lógica de cierre de sesión en el controlador
             new LoginView().setVisible(true);
-        }
-    }
-
-    // Clase interna para el panel de seguimiento
-    private class PanelSeguimiento extends JPanel {
-        public PanelSeguimiento() {
-            setLayout(new BorderLayout());
-            setBackground(COLOR_BACKGROUND);
-            setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-            // Panel superior para búsqueda
-            JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            searchPanel.setBackground(COLOR_BACKGROUND);
-
-            JTextField searchField = new JTextField(20);
-            searchField.setPreferredSize(new Dimension(200, 30));
-            JButton searchButton = new JButton("Buscar");
-            styleButton(searchButton);
-
-            searchPanel.add(new JLabel("Número de Seguimiento: "));
-            searchPanel.add(searchField);
-            searchPanel.add(searchButton);
-
-            add(searchPanel, BorderLayout.NORTH);
-
-            // Panel central para mostrar el estado
-            JPanel statusPanel = new JPanel();
-            statusPanel.setBackground(COLOR_WHITE);
-            statusPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            // TODO: Implementar visualización de estado
-
-            add(statusPanel, BorderLayout.CENTER);
         }
     }
 }

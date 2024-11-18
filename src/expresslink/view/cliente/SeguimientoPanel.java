@@ -182,4 +182,11 @@ public class SeguimientoPanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    public void resetBusqueda() {
+        searchField.setText("");
+        statusPanel.setVisible(false);
+        revalidate();
+        repaint();
+    }
 }
