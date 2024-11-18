@@ -72,6 +72,10 @@ public class Usuario {
         this.telefono = telefono;
     }
 
+    public TipoUsuario getRol() {
+        return rol;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

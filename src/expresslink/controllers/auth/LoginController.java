@@ -67,23 +67,23 @@ public class LoginController {
             return;
 
         try {
-            // switch (usuarioActual.getRol()) {
-            // case CLIENTE:
-            // new ClienteDashboard(usuarioActual).setVisible(true);
-            // break;
-            // case TRANSPORTISTA:
-            // new TransportistaDashboard(usuarioActual).setVisible(true);
-            // break;
-            // case SUCURSAL:
-            // new SucursalDashboard(usuarioActual).setVisible(true);
-            // break;
-            // case ADMIN:
-            // mostrarInformacion("Dashboard de administrador en desarrollo",
-            // "Administrador");
-            // break;
-            // default:
-            // mostrarError("Tipo de usuario no soportado");
-            // }
+            switch (usuarioActual.getRol()) {
+                case CLIENTE:
+                    new ClienteDashboard(usuarioActual).setVisible(true);
+                    break;
+                case TRANSPORTISTA:
+                    // new TransportistaDashboard(usuarioActual).setVisible(true);
+                    break;
+                case SUCURSAL:
+                    // new SucursalDashboard(usuarioActual).setVisible(true);
+                    break;
+                case ADMIN:
+                    mostrarInformacion("Dashboard de administrador en desarrollo",
+                            "Administrador");
+                    break;
+                default:
+                    mostrarError("Tipo de usuario no soportado");
+            }
         } catch (Exception e) {
             mostrarError("Error al abrir el dashboard: " + e.getMessage());
             e.printStackTrace();
