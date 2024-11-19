@@ -1,5 +1,6 @@
 package expresslink.controllers.auth;
 
+import expresslink.model.Usuario;
 import expresslink.model.enums.TipoUsuario;
 import expresslink.view.login.RegisterView;
 import expresslink.view.login.LoginView;
@@ -41,13 +42,9 @@ public class RegisterController {
                 return;
             }
 
+            Usuario newUsuario = new Usuario(nombre, email, password, telefono, TipoUsuario.CLIENTE);
             // Por defecto registramos como CLIENTE
-            boolean registroExitoso = authController.registrarUsuario(
-                    nombre,
-                    email,
-                    password,
-                    telefono,
-                    TipoUsuario.CLIENTE);
+            boolean registroExitoso = authController.registrarUsuario(newUsuario);
 
             if (registroExitoso) {
                 mostrarExito("Usuario registrado exitosamente");

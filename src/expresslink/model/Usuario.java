@@ -29,6 +29,13 @@ public class Usuario {
         this.telefono = telefono;
         this.rol = rol;
     }
+    public Usuario(String nombre, String correo, String contrasenia, String telefono, TipoUsuario rol) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contrasenia = contrasenia;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
 
     // Getters
     public int getId() {
