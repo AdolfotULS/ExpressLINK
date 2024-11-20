@@ -1,0 +1,173 @@
+classDiagram
+    class Sucursal {
+        - int id
+        - String nombre
+        - String direccion
+        - String ciudad
+        + getters()
+        + setters()
+    }
+
+    class Usuario {
+        - int id
+        - String nombre
+        - String email
+        - String password
+        - String telefono
+        - Rol rol
+        - Sucursal sucursal
+        + getters()
+        + setters()
+    }
+
+    class Vehiculo {
+        - int id
+        - String patente
+        - double capacidadVolumen
+        + getters()
+        + setters()
+    }
+
+    class Transportista {
+        - int id
+        - Usuario usuario
+        - String licencia
+        - boolean disponible
+        - Sucursal sucursal
+        - Vehiculo vehiculo
+        + getters()
+        + setters()
+    }
+
+    class Paquete {
+        - int id
+        - String numSeguimiento
+        - String emailCliente
+        - Usuario cliente
+        - Sucursal sucursalOrigen
+        - Transportista transportista
+        - String destinatario
+        - String direccionDestino
+        - String dimensionesPeso
+        - double costo
+        - EstadoPaquete estado
+        - Date fechaCreacion
+        - Date fechaEstimada
+        - int intentosEntrega
+        - Usuario usuarioCreador
+        + getters()
+        + setters()
+    }
+
+    class TransaccionFinanciera {
+        - int id
+        - Sucursal sucursal
+        - TipoTransaccion tipo
+        - double monto
+        - String concepto
+        - Date fecha
+        - String referencia
+        - Paquete paquete
+        - Usuario usuario
+        + getters()
+        + setters()
+    }
+
+    class BalanceSucursal {
+        - int id
+        - Sucursal sucursal
+        - double balanceActual
+        - Date fechaActualizacion
+        - double ingresosPeriodo
+        - double gastosPeriodo
+        + getters()
+        + setters()
+    }
+
+    class LogSucursal {
+        - int id
+        - Sucursal sucursal
+        - TipoEvento tipoEvento
+        - String descripcion
+        - Date fecha
+        - String metadata
+        - Usuario usuario
+        + getters()
+        + setters()
+    }
+
+    class LogTransportista {
+        - int id
+        - Transportista transportista
+        - TipoEvento tipoEvento
+        - Paquete paquete
+        - String descripcion
+        - Date fecha
+        - String metadata
+        + getters()
+        + setters()
+    }
+
+    class LogPaquete {
+        - int id
+        - Paquete paquete
+        - EstadoPaquete estadoAnterior
+        - EstadoPaquete estadoNuevo
+        - String descripcion
+        - Date fecha
+        - String metadata
+        - Usuario usuario
+        + getters()
+        + setters()
+    }
+
+    %% Enumerations
+    class Rol {
+        <<enumeration>>
+        CLIENTE
+        TRANSPORTISTA
+        SUCURSAL
+        EMPRESA
+    }
+
+    class EstadoPaquete {
+        <<enumeration>>
+        PENDIENTE
+        EN_TRANSITO
+        ENTREGADO
+        CANCELADO
+    }
+
+    class TipoTransaccion {
+        <<enumeration>>
+        INGRESO
+        GASTO
+    }
+
+    class TipoEvento {
+        <<enumeration>>
+        CREACION
+        ACTUALIZACION
+        ELIMINACION
+        ASIGNACION
+        FINALIZACION
+    }
+
+    %% Relationships
+    Usuario --> Sucursal : "pertenece"
+    Transportista --> Usuario : "es"
+    Transportista --> Sucursal : "trabaja en"
+    Transportista --> Vehiculo : "usa"
+    Paquete --> Usuario : "cliente"
+    Paquete --> Sucursal : "origen"
+    Paquete --> Transportista : "asignado a"
+    TransaccionFinanciera --> Sucursal : "realizada en"
+    TransaccionFinanciera --> Paquete : "asociada a"
+    TransaccionFinanciera --> Usuario : "creada por"
+    BalanceSucursal --> Sucursal : "corresponde a"
+    LogSucursal --> Sucursal : "relacionado con"
+    LogSucursal --> Usuario : "registrado por"
+    LogTransportista --> Transportista : "relacionado con"
+    LogTransportista --> Paquete : "incluye"
+    LogPaquete --> Paquete : "registra"
+    LogPaquete --> Usuario : "creado por"

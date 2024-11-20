@@ -1,0 +1,123 @@
+erDiagram
+    USUARIO {
+        int id PK
+        string nombre
+        string email UK "Único"
+        string password
+        string telefono
+        enum rol "CLIENTE|TRANSPORTISTA|SUCURSAL|EMPRESA"
+        int sucursal_id FK "Solo para usuarios tipo SUCURSAL"
+    }
+
+    TRANSPORTISTA {
+        int id PK
+        int usuario_id FK
+        string licencia
+        boolean disponible
+        int sucursal_id FK
+        int vehiculo_id FK
+    }
+
+    SUCURSAL {
+        int id PK
+        string nombre
+        string direccion
+        string ciudad
+    }
+
+    PAQUETE {
+        int id PK
+        string num_seguimiento UK "Único"
+        string email_cliente "Para vincular sin registro"
+        int cliente_id FK "NULL si no está registrado"
+        int sucursal_origen_id FK
+        int transportista_id FK "NULL hasta asignación"
+        string destinatario
+        string dir_destino
+        string dimensiones_peso
+        double costo
+        enum estado
+        datetime fecha_creacion
+        datetime fecha_estimada
+        int intentos_entrega
+        int usuario_creador_id FK "Usuario que creó el paquete"
+    }
+
+    VEHICULO {
+        int id PK
+        string patente UK
+        double capacidad_volumen
+    }
+
+    TRANSACCION_FINANCIERA {
+        int id PK
+        int sucursal_id FK
+        enum tipo "INGRESO|GASTO"
+        double monto
+        string concepto
+        datetime fecha
+        string referencia
+        int paquete_id FK "opcional"
+        int usuario_id FK "Usuario que registró la transacción"
+    }
+
+    BALANCE_SUCURSAL {
+        int id PK
+        int sucursal_id FK
+        double balance_actual
+        datetime fecha_actualizacion
+        double ingresos_periodo
+        double gastos_periodo
+    }
+
+    LOG_SUCURSAL {
+        int id PK
+        int sucursal_id FK
+        enum tipo_evento
+        string descripcion
+        datetime fecha
+        json metadata
+        int usuario_id FK "Usuario que generó el evento"
+    }
+
+    LOG_TRANSPORTISTA {
+        int id PK
+        int transportista_id FK
+        enum tipo_evento
+        int paquete_id FK
+        string descripcion
+        datetime fecha
+        json metadata
+    }
+
+    LOG_PAQUETE {
+        int id PK
+        int paquete_id FK
+        enum estado_anterior
+        enum estado_nuevo
+        string descripcion
+        datetime fecha
+        json metadata
+        int usuario_id FK "Usuario que generó el cambio"
+    }
+
+    %% Relaciones principales
+    USUARIO }o--|| SUCURSAL : "trabaja en"
+    USUARIO ||--o{ PAQUETE : "envía/recibe/crea"
+    USUARIO ||--o| TRANSPORTISTA : es
+    TRANSPORTISTA ||--|| VEHICULO : conduce
+    TRANSPORTISTA }o--|| SUCURSAL : "asignado"
+    SUCURSAL ||--o{ PAQUETE : "gestiona"
+    TRANSPORTISTA ||--o{ PAQUETE : "entrega"
+
+    %% Relaciones financieras
+    SUCURSAL ||--o{ TRANSACCION_FINANCIERA : "genera"
+    SUCURSAL ||--|| BALANCE_SUCURSAL : "tiene"
+    USUARIO ||--o{ TRANSACCION_FINANCIERA : "registra"
+
+    %% Relaciones de logs
+    SUCURSAL ||--o{ LOG_SUCURSAL : "genera"
+    TRANSPORTISTA ||--o{ LOG_TRANSPORTISTA : "genera"
+    PAQUETE ||--o{ LOG_PAQUETE : "genera"
+    USUARIO ||--o{ LOG_SUCURSAL : "registra"
+    USUARIO ||--o{ LOG_PAQUETE : "registra"
