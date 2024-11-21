@@ -4,7 +4,7 @@ import expresslink.model.Usuario;
 import expresslink.view.login.ForgotPasswordView;
 import expresslink.view.login.LoginView;
 import expresslink.view.login.RegisterView;
-import expresslink.view.cliente.ClienteDashboard;
+//import expresslink.view.cliente.ClienteDashboard;
 import expresslink.view.transportista.TransportistaDashboard;
 import expresslink.view.sucursal.SucursalDashboard;
 import javax.swing.JOptionPane;
@@ -30,6 +30,8 @@ public class LoginController {
 
             // Intento de login
             usuarioActual = authController.inicioSesion(email, password);
+            mostrarInformacion(usuarioActual.toString(), "Base de Datos");
+            mostrarInformacion(usuarioActual.getSucursal().toString(), "Sucursal");
 
             if (usuarioActual != null) {
                 vista.limpiarCampos();
@@ -69,7 +71,7 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
-                    new ClienteDashboard(usuarioActual).setVisible(true);
+                    //new ClienteDashboard(usuarioActual).setVisible(true);
                     break;
                 case TRANSPORTISTA:
                     // new TransportistaDashboard(usuarioActual).setVisible(true);

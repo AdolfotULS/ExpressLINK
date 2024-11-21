@@ -49,4 +49,17 @@ public class Usuario extends Persona {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id=" + super.getId() + "," +
+            " password='" + getPassword() + "'" +
+            ", telefono='" + getTelefono() + "'" +
+            ", rol='" + getRol() + "'" +
+            ", sucursal='" + getSucursal() + "'" +
+            "}";
+    }
+
 }
