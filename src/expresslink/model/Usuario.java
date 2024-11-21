@@ -1,98 +1,52 @@
-//Chibi
-
 package expresslink.model;
 
-import expresslink.model.enums.TipoUsuario;
+import expresslink.model.enums.RolUsuario;
 
-public class Usuario {
-    private int id;
-    private String nombre;
-    private String correo;
-    private String contrasenia;
+public class Usuario extends Persona {
+    private String password;
     private String telefono;
-    private TipoUsuario rol;
+    private RolUsuario rol;
+    private Sucursal sucursal; // Relación con Sucursal
 
     // Constructor
-    public Usuario(int id, String nombre, String correo, String contrasenia, String telefono, TipoUsuario rol) {
-        this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contrasenia = contrasenia;
+    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol, Sucursal sucursal) {
+        super(id, nombre, email);
+        this.password = password;
         this.telefono = telefono;
         this.rol = rol;
+        this.sucursal = sucursal;
     }
 
-    public Usuario(int id, String nombre, String correo, String telefono, TipoUsuario rol) {
-        this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.rol = rol;
-    }
-    public Usuario(String nombre, String correo, String contrasenia, String telefono, TipoUsuario rol) {
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contrasenia = contrasenia;
-        this.telefono = telefono;
-        this.rol = rol;
+    // Getters and Setters
+    public String getPassword() {
+        return password;
     }
 
-    // Getters
-    public int getId() {
-        return id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTelefono() {
         return telefono;
     }
 
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
-    public TipoUsuario getRol() {
+    public RolUsuario getRol() {
         return rol;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", correo='" + correo + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", rol=" + rol +
-                '}';
+    public void setRol(RolUsuario rol) {
+        this.rol = rol;
     }
 
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
 }

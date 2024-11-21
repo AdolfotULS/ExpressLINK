@@ -22,7 +22,7 @@ public class AuthController {
                             rs.getString("nombre"),
                             rs.getString("email"),
                             rs.getString("telefono"),
-                            TipoUsuario.valueOf(rs.getString("rol")));
+                            RolUsuario.valueOf(rs.getString("rol")));
                 }
                 return null;
             }
@@ -104,7 +104,7 @@ public class AuthController {
         }
     }
 
-    public boolean registrarUsuario(String nombre, String email, String password, String telefono, TipoUsuario rol)
+    public boolean registrarUsuario(String nombre, String email, String password, String telefono, RolUsuario rol)
             throws SQLException {
         Connection conn = null;
         PreparedStatement checkStmt = null;

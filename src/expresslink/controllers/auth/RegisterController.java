@@ -1,7 +1,7 @@
 package expresslink.controllers.auth;
 
 import expresslink.model.Usuario;
-import expresslink.model.enums.TipoUsuario;
+import expresslink.model.enums.RolUsuario;
 import expresslink.view.login.RegisterView;
 import expresslink.view.login.LoginView;
 import javax.swing.JOptionPane;
@@ -42,7 +42,7 @@ public class RegisterController {
                 return;
             }
 
-            Usuario newUsuario = new Usuario(nombre, email, password, telefono, TipoUsuario.CLIENTE);
+            Usuario newUsuario = new Usuario(nombre, email, password, telefono, RolUsuario.CLIENTE);
             // Por defecto registramos como CLIENTE
             boolean registroExitoso = authController.registrarUsuario(newUsuario);
 
