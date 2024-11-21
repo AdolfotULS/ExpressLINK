@@ -1,19 +1,27 @@
 package expresslink.model;
-
-public class Sucursal extends Entidad {
+public class Sucursal {
+    private int id;
     private String nombre;
     private String direccion;
     private String ciudad;
 
     // Constructor
     public Sucursal(int id, String nombre, String direccion, String ciudad) {
-        super(id);
+        this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.ciudad = ciudad;
     }
 
     // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -38,16 +46,13 @@ public class Sucursal extends Entidad {
         this.ciudad = ciudad;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id=" + super.getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", direccion='" + getDireccion() + "'" +
-            ", ciudad='" + getCiudad() + "'" +
+            " id=" + id +
+            ", nombre='" + nombre + "'" +
+            ", direccion='" + direccion + "'" +
+            ", ciudad='" + ciudad + "'" +
             "}";
     }
-
 }
-

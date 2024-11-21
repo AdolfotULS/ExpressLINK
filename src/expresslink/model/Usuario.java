@@ -1,6 +1,5 @@
 package expresslink.model;
-
-import expresslink.model.enums.RolUsuario;
+import expresslink.model.*;
 
 public class Usuario extends Persona {
     private String password;
