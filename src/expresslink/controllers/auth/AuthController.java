@@ -6,25 +6,6 @@ import expresslink.utils.DatabaseConnection;
 import java.sql.*;
 
 public class AuthController {
-    public Sucursal obteneSucursal(int id) throws SQLException {
-        if (id <= 0) return null;
-        String query = "SELECT sucursal.nombre, sucursal.direccion, sucursal.ciudad FROM sucursal WHERE sucursal.id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Sucursal(id,
-                    rs.getString("nombre"), 
-                    rs.getString("direccion"),
-                    rs.getString("ciudad"));
-                }
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Error durante el login", e);
-        }
-    }
     public Usuario inicioSesion(String email, String password) throws SQLException {
         String query = "SELECT usuario.id, usuario.nombre, usuario.telefono, usuario.rol, usuario.sucursal_id FROM usuario WHERE usuario.email = ? AND usuario.`password` = ?";
 
@@ -32,172 +13,134 @@ public class AuthController {
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, email);
-            stmt.setString(2, password); 
+            stmt.setString(2, password);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new Usuario(
-                        rs.getInt("id"), 
-                        rs.getString("nombre"), 
-                        email, 
-                        password,
-                        rs.getString("telefono"), 
-                        RolUsuario.valueOf(rs.getString("rol")), 
-                        obteneSucursal(rs.getInt("sucursal_id")));
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            email,
+                            password,
+                            rs.getString("telefono"),
+                            RolUsuario.valueOf(rs.getString("rol")),
+                            rs.getInt("sucursal_id") == 0 ? null
+                                    : obteneSucursal(rs.getInt("sucursal_id")));
                 }
                 return null;
             }
         } catch (SQLException e) {
-            throw new SQLException("Error durante el login", e);
+            throw new SQLException("Error durante el login [Inicio Sesion]", e);
         }
     }
 
-    public boolean registrarUsuario(Usuario nuevoUsuario)
-            throws SQLException {
-                return false;
-        // Connection conn = null;
-        // PreparedStatement checkStmt = null;
-        // PreparedStatement insertStmt = null;
-        // ResultSet rs = null;
+    // public Transportista obtenerTransportista(Usuario usuario) {
+    // String query = "";
+    // try (Connection conn = DatabaseConnection.getConnection();
+    // PreparedStatement stmt = conn.prepareStatement(query)) {
+    // stmt.setString(1, email);
+    // } catch (SQLException e) {
+    // throw new SQLException("Error durante recoleccion de datos [Transportista]",
+    // e);ow
+    // }
 
-        // try {
-        //     conn = DatabaseConnection.getConnection();
-        //     conn.setAutoCommit(false); // Iniciamos una transacción
+    // return null;
+    // }
 
-        //     // Primero verificamos si el email existe
-        //     String checkQuery = "SELECT COUNT(*) FROM usuario WHERE email = ?";
-        //     checkStmt = conn.prepareStatement(checkQuery);
-        //     checkStmt.setString(1, nuevoUsuario.getCorreo());
-        //     rs = checkStmt.executeQuery();
-
-        //     if (rs.next() && rs.getInt(1) > 0) {
-        //         throw new SQLException("El email ya está registrado");
-        //     }
-
-        //     // Si no existe, procedemos con el registro
-        //     String insertQuery = "INSERT INTO usuario (nombre, email, password, telefono, rol) VALUES (?, ?, ?, ?, ?)";
-        //     insertStmt = conn.prepareStatement(insertQuery);
-        //     insertStmt.setString(1, nuevoUsuario.getNombre());
-        //     insertStmt.setString(2, nuevoUsuario.getCorreo());
-        //     insertStmt.setString(3, nuevoUsuario.getContrasenia());
-        //     insertStmt.setString(4, nuevoUsuario.getTelefono());
-        //     insertStmt.setString(5, nuevoUsuario.getRol().toString());
-
-        //     int filasAfectadas = insertStmt.executeUpdate();
-
-        //     conn.commit(); // Confirmamos la transacción
-        //     return filasAfectadas > 0;
-
-        // } catch (SQLException e) {
-        //     if (conn != null) {
-        //         try {
-        //             conn.rollback(); // Si hay error, revertimos la transacción
-        //         } catch (SQLException ex) {
-        //             ex.printStackTrace();
-        //         }
-        //     }
-        //     throw new SQLException("Error durante el registro: " + e.getMessage(), e);
-        // } finally {
-        //     // Cerramos todos los recursos en orden inverso
-        //     if (rs != null)
-        //         try {
-        //             rs.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (checkStmt != null)
-        //         try {
-        //             checkStmt.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (insertStmt != null)
-        //         try {
-        //             insertStmt.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (conn != null)
-        //         try {
-        //             conn.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        // }
+    public Sucursal obteneSucursal(int id) throws SQLException {
+        if (id <= 0)
+            return null;
+        String query = "SELECT sucursal.nombre, sucursal.direccion, sucursal.ciudad FROM sucursal WHERE sucursal.id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Sucursal(id,
+                            rs.getString("nombre"),
+                            rs.getString("direccion"),
+                            rs.getString("ciudad"));
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error durante el login [Sucursal]", e);
+        }
     }
 
-    public boolean registrarUsuario(String nombre, String email, String password, String telefono, RolUsuario rol)
-            throws SQLException {
-                return false;
-        // Connection conn = null;
-        // PreparedStatement checkStmt = null;
-        // PreparedStatement insertStmt = null;
-        // ResultSet rs = null;
+    public boolean registrarUsuario(Usuario nuevoUsuario) throws SQLException {
+        Connection conn = null;
+        PreparedStatement checkStmt = null;
+        PreparedStatement insertStmt = null;
+        ResultSet rs = null;
 
-        // try {
-        //     conn = DatabaseConnection.getConnection();
-        //     conn.setAutoCommit(false); // Iniciamos una transacción
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false); // Iniciamos una transacción
 
-        //     // Primero verificamos si el email existe
-        //     String checkQuery = "SELECT COUNT(*) FROM usuario WHERE email = ?";
-        //     checkStmt = conn.prepareStatement(checkQuery);
-        //     checkStmt.setString(1, email);
-        //     rs = checkStmt.executeQuery();
+            // Primero verificamos si el email existe
+            String checkQuery = "SELECT COUNT(*) FROM usuario WHERE email = ?";
+            checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setString(1, nuevoUsuario.getEmail());
+            rs = checkStmt.executeQuery();
 
-        //     if (rs.next() && rs.getInt(1) > 0) {
-        //         throw new SQLException("El email ya está registrado");
-        //     }
+            if (rs.next() && rs.getInt(1) > 0) {
+                throw new SQLException("El email ya está registrado");
+            }
 
-        //     // Si no existe, procedemos con el registro
-        //     String insertQuery = "INSERT INTO usuario (nombre, email, password, telefono, rol) VALUES (?, ?, ?, ?, ?)";
-        //     insertStmt = conn.prepareStatement(insertQuery);
-        //     insertStmt.setString(1, nombre);
-        //     insertStmt.setString(2, email);
-        //     insertStmt.setString(3, password);
-        //     insertStmt.setString(4, telefono);
-        //     insertStmt.setString(5, rol.toString());
+            // Si no existe, procedemos con el registro
+            String insertQuery = "INSERT INTO USUARIO (nombre, email, password, telefono, rol, sucursal_id) VALUES (?, ?, ?, ?, 'CLIENTE', NULL)";
+            insertStmt = conn.prepareStatement(insertQuery);
+            insertStmt.setString(1, nuevoUsuario.getNombre());
+            insertStmt.setString(2, nuevoUsuario.getEmail());
+            insertStmt.setString(3, nuevoUsuario.getPassword());
+            insertStmt.setString(4, nuevoUsuario.getTelefono());
 
-        //     int filasAfectadas = insertStmt.executeUpdate();
+            int filasAfectadas = insertStmt.executeUpdate();
 
-        //     conn.commit(); // Confirmamos la transacción
-        //     return filasAfectadas > 0;
+            conn.commit(); // Confirmamos la transacción
+            return filasAfectadas > 0;
 
-        // } catch (SQLException e) {
-        //     if (conn != null) {
-        //         try {
-        //             conn.rollback(); // Si hay error, revertimos la transacción
-        //         } catch (SQLException ex) {
-        //             ex.printStackTrace();
-        //         }
-        //     }
-        //     throw new SQLException("Error durante el registro: " + e.getMessage(), e);
-        // } finally {
-        //     // Cerramos todos los recursos en orden inverso
-        //     if (rs != null)
-        //         try {
-        //             rs.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (checkStmt != null)
-        //         try {
-        //             checkStmt.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (insertStmt != null)
-        //         try {
-        //             insertStmt.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     if (conn != null)
-        //         try {
-        //             conn.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        // }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); // Si hay error, revertimos la transacción
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            throw new SQLException("Error durante el registro: " + e.getMessage(), e);
+        } finally {
+            // Cerramos todos los recursos en orden inverso
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (checkStmt != null) {
+                try {
+                    checkStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (insertStmt != null) {
+                try {
+                    insertStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public String recuperarContrasena(String email) throws SQLException {

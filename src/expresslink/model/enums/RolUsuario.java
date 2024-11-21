@@ -4,5 +4,5 @@ public enum RolUsuario { // Roles del usuario
     CLIENTE,
     TRANSPORTISTA,
     SUCURSAL,
-    ADMIN
+    EMPRESA
 }

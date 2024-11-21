@@ -1,5 +1,7 @@
 package expresslink.model;
+
 import expresslink.model.*;
+import expresslink.model.enums.*;
 
 public class Usuario extends Persona {
     private String password;
@@ -8,7 +10,8 @@ public class Usuario extends Persona {
     private Sucursal sucursal; // Relación con Sucursal
 
     // Constructor
-    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol, Sucursal sucursal) {
+    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol,
+            Sucursal sucursal) {
         super(id, nombre, email);
         this.password = password;
         this.telefono = telefono;
@@ -49,16 +52,15 @@ public class Usuario extends Persona {
         this.sucursal = sucursal;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " id=" + super.getId() + "," +
-            " password='" + getPassword() + "'" +
-            ", telefono='" + getTelefono() + "'" +
-            ", rol='" + getRol() + "'" +
-            ", sucursal='" + getSucursal() + "'" +
-            "}";
+                " id=" + super.getId() + "," +
+                " password='" + getPassword() + "'" +
+                ", telefono='" + getTelefono() + "'" +
+                ", rol='" + getRol() + "'" +
+                ", sucursal='" + getSucursal() + "'" +
+                "}";
     }
 
 }

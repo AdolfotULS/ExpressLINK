@@ -42,9 +42,10 @@ public class RegisterController {
                 return;
             }
 
-            //Usuario newUsuario = new Usuario(nombre, email, password, telefono, RolUsuario.CLIENTE);
+            // Usuario newUsuario = new Usuario(nombre, email, password, telefono,
+            // RolUsuario.CLIENTE);
             // Por defecto registramos como CLIENTE
-            //boolean registroExitoso = authController.registrarUsuario(newUsuario);
+            // boolean registroExitoso = authController.registrarUsuario(newUsuario);
             boolean registroExitoso = false;
 
             if (registroExitoso) {

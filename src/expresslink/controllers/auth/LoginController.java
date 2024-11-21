@@ -1,13 +1,9 @@
 package expresslink.controllers.auth;
 
-import expresslink.model.Usuario;
-import expresslink.view.login.ForgotPasswordView;
-import expresslink.view.login.LoginView;
-import expresslink.view.login.RegisterView;
-//import expresslink.view.cliente.ClienteDashboard;
-import expresslink.view.transportista.TransportistaDashboard;
-import expresslink.view.sucursal.SucursalDashboard;
-import javax.swing.JOptionPane;
+import expresslink.model.*;
+import expresslink.view.cliente.*;
+import expresslink.view.login.*;
+import javax.swing.*;
 
 public class LoginController {
     private final LoginView vista;
@@ -30,14 +26,14 @@ public class LoginController {
 
             // Intento de login
             usuarioActual = authController.inicioSesion(email, password);
-            mostrarInformacion(usuarioActual.toString(), "Base de Datos");
-            mostrarInformacion(usuarioActual.getSucursal().toString(), "Sucursal");
+            // mostrarInformacion(usuarioActual.toString(), "Base de Datos");
+            // mostrarInformacion(usuarioActual.getSucursal().toString(), "Sucursal");
 
             if (usuarioActual != null) {
                 vista.limpiarCampos();
                 abrirDashboardSegunRol();
                 vista.dispose(); // Cerrar ventana de login
-                mostrarInformacion("Usted ha Iniciado session como " + email, "Exitoso");
+                mostrarInformacion("Usted ha Iniciado session como " + usuarioActual.getNombre(), "Exitoso");
             } else {
                 mostrarError("Credenciales inválidas");
             }
@@ -71,15 +67,19 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
-                    //new ClienteDashboard(usuarioActual).setVisible(true);
+                    new ClienteDashboard(usuarioActual).setVisible(true);
                     break;
                 case TRANSPORTISTA:
                     // new TransportistaDashboard(usuarioActual).setVisible(true);
+                    mostrarInformacion("Dashboard de Transportista en desarrollo",
+                            "Administrador");
                     break;
                 case SUCURSAL:
                     // new SucursalDashboard(usuarioActual).setVisible(true);
+                    mostrarInformacion("Dashboard de Sucursal en desarrollo",
+                            "Administrador");
                     break;
-                case ADMIN:
+                case EMPRESA:
                     mostrarInformacion("Dashboard de administrador en desarrollo",
                             "Administrador");
                     break;
