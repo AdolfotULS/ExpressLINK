@@ -7,8 +7,6 @@ import expresslink.controllers.auth.LoginController;
 import expresslink.model.Usuario;
 import expresslink.view.login.LoginView;
 
-//@author SheratoD
-
 public class ExpressLINK {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

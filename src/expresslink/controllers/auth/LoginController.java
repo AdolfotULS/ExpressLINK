@@ -27,14 +27,14 @@ public class LoginController {
 
             // Intento de login
             usuarioActual = authController.inicioSesion(email, password);
-            mostrarInformacion(usuarioActual.toString(), "Base de Datos");
+            // mostrarInformacion(usuarioActual.toString(), "Base de Datos");
             // mostrarInformacion(usuarioActual.getSucursal().toString(), "Sucursal");
 
             if (usuarioActual != null) {
                 vista.limpiarCampos();
                 abrirDashboardSegunRol();
                 vista.dispose(); // Cerrar ventana de login
-                mostrarInformacion("Usted ha Iniciado session como " + email, "Exitoso");
+                mostrarInformacion("Usted ha Iniciado session como " + usuarioActual.getNombre(), "Exitoso");
             } else {
                 mostrarError("Credenciales inválidas");
             }
@@ -68,6 +68,8 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
+                    mostrarInformacion("Dashboard de Cliente en desarrollo",
+                            "Administrador");
                     // new ClienteDashboard(usuarioActual).setVisible(true);
                     break;
                 case TRANSPORTISTA:
@@ -80,7 +82,7 @@ public class LoginController {
                     mostrarInformacion("Dashboard de Sucursal en desarrollo",
                             "Administrador");
                     break;
-                case ADMIN:
+                case EMPRESA:
                     mostrarInformacion("Dashboard de administrador en desarrollo",
                             "Administrador");
                     break;

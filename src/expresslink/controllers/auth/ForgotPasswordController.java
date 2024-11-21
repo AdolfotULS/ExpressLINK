@@ -33,7 +33,6 @@ public class ForgotPasswordController {
                     "Su contraseña es: " + contrasenaEnmascarada + "\n" +
                             "Por seguridad, solo se muestra la mitad de la contraseña.\n" +
                             "Si no recuerda su contraseña, contacte con soporte.");
-
             // Si todo sale bien, volver al login después de un momento
             volverLogin();
 
