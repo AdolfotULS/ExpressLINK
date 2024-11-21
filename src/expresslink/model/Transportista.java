@@ -1,14 +1,18 @@
 package expresslink.model;
+
 import expresslink.model.*;
+import expresslink.model.enums.*;
+
 public class Transportista extends Usuario {
     private String licencia;
     private boolean disponible;
     private Vehiculo vehiculo;
 
-    //Constructor
+    // Constructor
 
-    public Transportista(int id, String nombre, String email, String password, String telefono, RolUsuario rol, Sucursal sucursal,
-                         String licencia, boolean disponible, Vehiculo vehiculo) {
+    public Transportista(int id, String nombre, String email, String password, String telefono, RolUsuario rol,
+            Sucursal sucursal,
+            String licencia, boolean disponible, Vehiculo vehiculo) {
         super(id, nombre, email, password, telefono, rol, sucursal);
         if (licencia == null || licencia.isEmpty()) {
             throw new IllegalArgumentException("La licencia no puede ser nula o vacía.");
@@ -39,23 +43,23 @@ public class Transportista extends Usuario {
     }
 
     public Vehiculo getVehiculo() {
-        return vehiculo != null ? new Vehiculo(vehiculo) : null;
+        return vehiculo != null ? vehiculo : null;
     }
 
     public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo != null ? new Vehiculo(vehiculo) : null;
+        this.vehiculo = vehiculo != null ? vehiculo : null;
     }
 
     @Override
     public String toString() {
         return "Transportista{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + '\'' +
-            ", email='" + getEmail() + '\'' +
-            ", telefono='" + getTelefono() + '\'' +
-            ", licencia='" + licencia + '\'' +
-            ", disponible=" + disponible +
-            ", vehiculo=" + (vehiculo != null ? vehiculo.getPlaca() : "Sin asignar") +
-            '}';
+                "id=" + getId() +
+                ", nombre='" + getNombre() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", telefono='" + getTelefono() + '\'' +
+                ", licencia='" + licencia + '\'' +
+                ", disponible=" + disponible +
+                ", vehiculo=" + (vehiculo != null ? vehiculo.getPatente() : "Sin asignar") +
+                '}';
     }
 }

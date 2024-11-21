@@ -2,6 +2,7 @@ package expresslink.model;
 
 import expresslink.model.*;
 import java.util.Date; // Para el manejo de fechas
+import expresslink.model.enums.*;
 
 public class TransaccionFinanciera {
     private int id;
@@ -10,11 +11,12 @@ public class TransaccionFinanciera {
     private double monto;
     private String concepto;
     private Date fecha;
-    private Strinf referencia;
+    private String referencia;
     private Paquete paquete;
     private Usuario usuario;
 
-    public TransaccionFinanciera(int id, Sucursal sucursal, TipoTransaccion tipo, double monto, String concepto, Date fecha, Strinf referencia, Paquete paquete, Usuario usuario) {
+    public TransaccionFinanciera(int id, Sucursal sucursal, TipoTransaccion tipo, double monto, String concepto,
+            Date fecha, String referencia, Paquete paquete, Usuario usuario) {
         this.id = id;
         this.sucursal = sucursal;
         this.tipo = tipo;
@@ -50,7 +52,7 @@ public class TransaccionFinanciera {
         return fecha;
     }
 
-    public Strinf getReferencia() {
+    public String getReferencia() {
         return referencia;
     }
 
@@ -86,7 +88,7 @@ public class TransaccionFinanciera {
         this.fecha = fecha;
     }
 
-    public void setReferencia(Strinf referencia) {
+    public void setReferencia(String referencia) {
         this.referencia = referencia;
     }
 

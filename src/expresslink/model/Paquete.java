@@ -2,6 +2,7 @@ package expresslink.model;
 
 import java.util.Date; // Para el manejo de fechas
 import expresslink.model.*;
+import expresslink.model.enums.*;
 
 public class Paquete {
     private int id;

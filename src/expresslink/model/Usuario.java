@@ -1,11 +1,7 @@
 package expresslink.model;
-<<<<<<< Updated upstream
-import expresslink.model.*;
-=======
 
 import expresslink.model.*;
-import expresslink.model.enums.RolUsuario;
->>>>>>> Stashed changes
+import expresslink.model.enums.*;
 
 public class Usuario extends Persona {
     private String password;
