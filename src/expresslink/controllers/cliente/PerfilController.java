@@ -8,9 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class PerfilController {
-    // Expresiones regulares para validación
-    private static final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-    private static final String PHONE_REGEX = "^\\+56[2-9][0-9]{8}$";
 
     public boolean actualizarInformacionUsuario(Usuario usuario, String nuevoNombre, String nuevoTelefono)
             throws SQLException {
@@ -94,47 +91,64 @@ public class PerfilController {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
 
-        if (nombre.length() > 100) {
-            throw new IllegalArgumentException("El nombre no puede tener más de 100 caracteres");
-        }
-
-        // Validar teléfono
-        if (telefono == null || telefono.trim().isEmpty()) {
-            throw new IllegalArgumentException("El teléfono no puede estar vacío");
-        }
-
-        if (!Pattern.matches(PHONE_REGEX, telefono)) {
+        if (!validarTelefonoChileno(telefono)) {
             throw new IllegalArgumentException("El formato del teléfono debe ser +56XXXXXXXXX");
         }
 
         return true;
     }
 
+    private boolean validarEmail(String email) {
+        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return email != null && email.matches(regex);
+    }
+
     private boolean validarContrasena(String contrasena) {
         if (contrasena == null || contrasena.isEmpty()) {
-            throw new IllegalArgumentException("La contraseña no puede estar vacía");
+            mostrarError("La contraseña no puede estar vacía.");
+            return false;
         }
 
-        if (contrasena.length() < 8) {
-            throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres");
+        if (contrasena.length() < 3) {
+            mostrarError("La contraseña no puede tener menos de 3 caracteres.");
+            return false;
         }
 
-        if (contrasena.length() > 100) {
-            throw new IllegalArgumentException("La contraseña no puede tener más de 100 caracteres");
+        if (contrasena.length() >= 100) {
+            mostrarError("La contraseña no puede tener más de 100 caracteres.");
+            return false;
         }
 
-        // Comprobar requisitos mínimos de seguridad
-        boolean tieneMayuscula = contrasena.matches(".*[A-Z].*");
-        boolean tieneMinuscula = contrasena.matches(".*[a-z].*");
-        boolean tieneNumero = contrasena.matches(".*\\d.*");
-        boolean tieneEspecial = contrasena.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
-
-        if (!(tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial)) {
-            throw new IllegalArgumentException(
-                    "La contraseña debe contener al menos una mayúscula, una minúscula, " +
-                            "un número y un carácter especial");
+        // Expresión regular para validar que la contraseña:
+        // - No tenga espacios
+        // - Solo permita caracteres alfanuméricos y símbolos comunes seguros
+        String regex = "^[A-Za-z0-9!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/|~`]+$";
+        if (!contrasena.matches(regex)) {
+            mostrarError("La contraseña contiene caracteres no permitidos o espacios.");
+            return false;
         }
 
+        // Si pasa todas las validaciones
+        return true;
+    }
+
+    private boolean validarTelefonoChileno(String telefono) {
+        if (telefono == null || telefono.isEmpty()) {
+            mostrarError("El número de teléfono no puede estar vacío.");
+            return false;
+        }
+
+        // Expresión regular para números de teléfono chilenos
+        // - Deben comenzar con +56
+        // - Luego tienen que tener 9 dígitos después del prefijo internacional
+        String regex = "^\\+56[2-9][0-9]{8}$";
+
+        if (!telefono.matches(regex)) {
+            mostrarError("El número de teléfono no es válido. Debe tener el formato +56XXXXXXXXX.");
+            return false;
+        }
+
+        // Si pasa todas las validaciones
         return true;
     }
 

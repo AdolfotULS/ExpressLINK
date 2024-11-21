@@ -1,10 +1,9 @@
 package expresslink.controllers.auth;
 
-import expresslink.model.Usuario;
-import expresslink.view.login.ForgotPasswordView;
-import expresslink.view.login.LoginView;
-import expresslink.view.login.RegisterView;
-import javax.swing.JOptionPane;
+import expresslink.model.*;
+import expresslink.view.cliente.*;
+import expresslink.view.login.*;
+import javax.swing.*;
 
 public class LoginController {
     private final LoginView vista;
@@ -68,9 +67,7 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
-                    mostrarInformacion("Dashboard de Cliente en desarrollo",
-                            "Administrador");
-                    // new ClienteDashboard(usuarioActual).setVisible(true);
+                    new ClienteDashboard(usuarioActual).setVisible(true);
                     break;
                 case TRANSPORTISTA:
                     // new TransportistaDashboard(usuarioActual).setVisible(true);
