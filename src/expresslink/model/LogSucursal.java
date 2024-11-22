@@ -13,6 +13,12 @@ public class LogSucursal {
     private String metadata ;
     private Usuario usuario ; // Relacion con Usuario
 
+    enum TipoEvento {
+        CREACION,
+        ACTUALIZACION,
+        ELIMINACION
+    }
+
     public LogSucursal(int id, Sucursal sucursal, TipoEvento tipoEvento, String descripcion, Date fecha, String metadata, Usuario usuario) {
         this.id = id;
         this.sucursal = sucursal;

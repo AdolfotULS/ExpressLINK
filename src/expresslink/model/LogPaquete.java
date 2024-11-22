@@ -1,5 +1,6 @@
 package expresslink.model;
 import expresslink.model.*;
+import expresslink.model.enums.*;
 import java.sql.Date;
 
 public class LogPaquete {
