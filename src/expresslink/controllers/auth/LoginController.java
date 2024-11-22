@@ -67,7 +67,7 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
-                    new ClienteDashboard(usuarioActual).setVisible(true);
+                    //new ClienteDashboard(usuarioActual).setVisible(true);
                     break;
                 case TRANSPORTISTA:
                     // new TransportistaDashboard(usuarioActual).setVisible(true);

@@ -14,10 +14,11 @@ public class PerfilPanel extends JPanel {
     private Usuario usuario;
     private JTextField nombreField;
     private JTextField emailField;
-    private JTextField telefonoField;
+    private JTextField telefonoField;   
     private JPasswordField passwordActualField;
     private JPasswordField passwordNuevaField;
     private JPasswordField confirmPasswordField;
+    private PerfilController controlador;
 
     public PerfilPanel(Usuario usuario) {
         this.usuario = usuario;
@@ -26,6 +27,10 @@ public class PerfilPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         inicializarGUI();
+    }
+
+    public void setControlador(PerfilController controller) {
+        this.controlador = controller;
     }
 
     private void inicializarGUI() {
@@ -151,7 +156,7 @@ public class PerfilPanel extends JPanel {
     private void guardarCambios() {
         try {
             // Crear una instancia del controlador
-            PerfilController controlador = new PerfilController();
+            controlador = new PerfilController();
 
             // Actualizar informacion basica
             boolean infoActualizada = controlador.actualizarInformacionUsuario(
