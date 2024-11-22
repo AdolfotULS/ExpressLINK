@@ -17,7 +17,7 @@ public class ClienteDashboard extends JFrame {
     private JPanel panelMisPedidos;
     private SeguimientoPanel panelSeguimiento;
     private JPanel panelHistorial;
-    private PerfilPanel panelPerfil;
+    private PerfilPanelV1 panelPerfil;
 
     // Colores
     private static final Color COLOR_PRIMARY = new Color(33, 150, 243); // Azul
@@ -155,7 +155,7 @@ public class ClienteDashboard extends JFrame {
         panelSeguimiento = new SeguimientoPanel();
 
         // Panel de Perfil
-        panelPerfil = new PerfilPanel(usuario);
+        panelPerfil = new PerfilPanelV1(usuario);
 
         // Panel de Historial (Temporal hasta implementar HistorialPanel)
         panelHistorial = new JPanel();
@@ -164,7 +164,7 @@ public class ClienteDashboard extends JFrame {
         // TODO: Implementar HistorialPanel
 
         // Panel de Perfil
-        panelPerfil = new PerfilPanel(usuario);
+        panelPerfil = new PerfilPanelV1(usuario);
     }
 
     private void handleLogout() {

@@ -4,10 +4,20 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 import expresslink.model.Usuario;
 import expresslink.utils.DatabaseConnection;
+import expresslink.view.cliente.PerfilPanel;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class PerfilController {
+    private Usuario usuarioActual;
+    private PerfilPanel vista;
+
+    public PerfilController(PerfilPanel vista, Usuario usuario){
+        this.vista = vista;
+        this.usuarioActual = usuario;
+    }
+
 
     public boolean actualizarInformacionUsuario(Usuario usuario, String nuevoNombre, String nuevoTelefono)
             throws SQLException {
