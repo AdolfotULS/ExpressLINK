@@ -165,4 +165,8 @@ public class PerfilController {
     public String obtenerEstadoConexion() {
         return DatabaseConnection.getConnectionStatus();
     }
+
+    private void mostrarError(String mensaje) {
+        vista.mostrarError(mensaje);
+    }
 }

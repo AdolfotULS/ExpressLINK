@@ -156,7 +156,7 @@ public class PerfilPanelV1 extends JPanel {
     private void guardarCambios() {
         try {
             // Crear una instancia del controlador
-            controlador = new PerfilController();
+            //controlador = new PerfilController();
 
             // Actualizar informacion basica
             boolean infoActualizada = controlador.actualizarInformacionUsuario(

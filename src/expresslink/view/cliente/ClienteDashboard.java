@@ -2,6 +2,7 @@ package expresslink.view.cliente;
 
 import expresslink.model.Usuario;
 import expresslink.controllers.cliente.ClienteController;
+import expresslink.view.components.*;
 import expresslink.view.login.LoginView;
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class ClienteDashboard extends JFrame {
 
     // Paneles principales
     private JPanel panelMisPedidos;
-    private SeguimientoPanel panelSeguimiento;
+    private  panelSeguimiento;
     private JPanel panelHistorial;
     private PerfilPanelV1 panelPerfil;
 

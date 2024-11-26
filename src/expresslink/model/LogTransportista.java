@@ -11,6 +11,12 @@ public class LogTransportista {
     private Date fecha ;
     private String metadata ;
 
+    enum TipoEvento {
+        ASIGNACION,
+        ACTUALIZACION,
+        FINALIZACION
+    }
+
     public LogTransportista(int id, Transportista transportista, TipoEvento tipoEvento, Paquete paquete, String descripcion, Date fecha, String metadata) {
         this.id = id;
         this.transportista = transportista;
