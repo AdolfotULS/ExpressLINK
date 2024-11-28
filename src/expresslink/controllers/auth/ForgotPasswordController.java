@@ -11,7 +11,6 @@ public class ForgotPasswordController {
     public ForgotPasswordController(ForgotPasswordView vista) {
         this.vista = vista;
         this.authController = new AuthController();
-        this.vista.setControlador(this);
     }
 
     public void manejarRecuperarContrasena(String email) {
@@ -45,7 +44,6 @@ public class ForgotPasswordController {
     public void volverLogin() {
         // Cerrar ventana actual y abrir login
         LoginView loginView = new LoginView();
-        LoginController loginController = new LoginController(loginView);
         loginView.setVisible(true);
         vista.dispose();
     }

@@ -11,10 +11,7 @@ public class ForgotPasswordView extends JFrame {
 
     public ForgotPasswordView() {
         initializeGUI();
-    }
-
-    public void setControlador(ForgotPasswordController controlador) {
-        this.controlador = controlador;
+        this.controlador = new ForgotPasswordController(this);
     }
 
     private void initializeGUI() {
@@ -119,13 +116,5 @@ public class ForgotPasswordView extends JFrame {
 
     public void mostrarExito(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ForgotPasswordView vista = new ForgotPasswordView();
-            ForgotPasswordController controlador = new ForgotPasswordController(vista);
-            vista.setVisible(true);
-        });
     }
 }

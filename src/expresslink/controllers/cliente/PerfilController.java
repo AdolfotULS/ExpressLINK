@@ -1,7 +1,7 @@
 package expresslink.controllers.cliente;
 
 import java.sql.SQLException;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 import expresslink.model.Usuario;
 import expresslink.utils.DatabaseConnection;
 import expresslink.view.cliente.PerfilPanel;
@@ -10,14 +10,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class PerfilController {
-    private Usuario usuarioActual;
+    private Usuario usuario;
     private PerfilPanel vista;
 
-    public PerfilController(PerfilPanel vista, Usuario usuario){
+    public PerfilController(Usuario usuario, PerfilPanel vista) {
         this.vista = vista;
-        this.usuarioActual = usuario;
+        this.usuario = usuario;
     }
 
+    public boolean actualizarInformacionPerfil(Usuario nuevaInfo, String actualPassword) {
+        if (usuario.getNombre() == nuevaInfo.getNombre()) {
+            vista.mostrarExito("Cambio de Nombre");
+        }
+
+        if (usuario.getPassword() == nuevaInfo.getPassword()) {
+
+        }
+        return true;
+    }
 
     public boolean actualizarInformacionUsuario(Usuario usuario, String nuevoNombre, String nuevoTelefono)
             throws SQLException {

@@ -19,6 +19,14 @@ public class Usuario extends Persona {
         this.sucursal = sucursal;
     }
 
+    // Constructor para registro
+    public Usuario(String nombre, String email, String password, String telefono, RolUsuario rol) {
+        super(0, nombre, email);
+        this.password = password;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
+
     // Getters and Setters
     public String getPassword() {
         return password;

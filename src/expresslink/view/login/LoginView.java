@@ -11,14 +11,11 @@ import expresslink.controllers.auth.LoginController;
 public class LoginView extends JFrame {
     private JTextField userField;
     private JPasswordField passwordField;
-    private LoginController controlador;
+    public LoginController controlador;
 
     public LoginView() {
         inicializarGUI();
-    }
-
-    public void setControlador(LoginController controlador) {
-        this.controlador = controlador;
+        this.controlador = new LoginController(this);
     }
 
     private void inicializarGUI() {

@@ -16,31 +16,25 @@ public class ClienteDashboard extends JFrame {
 
     // Utilidades
     private ClienteController controlador;
-    private LoginView loginView;
 
     // Paneles principales
     private JPanel panelMisPedidos;
     private PanelSeguimiento panelSeguimiento;
     private JPanel panelHistorial;
-    private PerfilPanelV1 panelPerfil;
+    private PerfilPanel panelPerfil;
 
     // Colores
-    private static final Color COLOR_PRIMARY = new Color(33, 150, 243); // Azul
-    private static final Color COLOR_BACKGROUND = new Color(240, 242, 245); // Gris claro
-    private static final Color COLOR_WHITE = Color.WHITE;
+    private static final Color COLOR_PRIMARIO = new Color(33, 150, 243); // Azul
+    private static final Color COLOR_FONDO = new Color(240, 242, 245); // Gris claro
+    private static final Color COLOR_BLANCO = Color.WHITE;
 
-    public ClienteDashboard(Usuario usuario, LoginView loginView, LoginController cLoginController) {
+    public ClienteDashboard(Usuario usuario, LoginView loginView) {
         this.usuario = usuario;
-        this.controlador = new ClienteController(usuario, loginView, cLoginController);
-        this.loginView = loginView;
-        initComponents();
+        this.controlador = new ClienteController(usuario, loginView, this);
+        inicializarGUI();
     }
 
-    public void setControlador(ClienteController controlador) {
-        this.controlador = controlador;
-    }
-
-    private void initComponents() {
+    private void inicializarGUI() {
         // Configuración básica de la ventana
         setTitle("ExpressLink - Panel de Cliente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +42,7 @@ public class ClienteDashboard extends JFrame {
 
         // Panel principal con BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(COLOR_BACKGROUND);
+        mainPanel.setBackground(COLOR_FONDO);
 
         // Panel de navegación (izquierda)
         JPanel navPanel = createNavPanel();
@@ -57,12 +51,13 @@ public class ClienteDashboard extends JFrame {
         // Panel de contenido con CardLayout
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        cardPanel.setBackground(COLOR_BACKGROUND);
+        cardPanel.setBackground(COLOR_FONDO);
 
         // Inicializar los paneles principales
         initializePanels();
 
         // Agregar los paneles al cardPanel
+
         cardPanel.add(panelMisPedidos, "PEDIDOS");
         cardPanel.add(panelSeguimiento, "SEGUIMIENTO");
         cardPanel.add(panelHistorial, "HISTORIAL");
@@ -82,7 +77,7 @@ public class ClienteDashboard extends JFrame {
     private JPanel createNavPanel() {
         JPanel navPanel = new JPanel();
         navPanel.setPreferredSize(new Dimension(200, 0));
-        navPanel.setBackground(COLOR_WHITE);
+        navPanel.setBackground(COLOR_BLANCO);
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
@@ -108,7 +103,7 @@ public class ClienteDashboard extends JFrame {
         navPanel.add(Box.createVerticalGlue());
         JButton logoutButton = new JButton("Cerrar Sesión");
         styleButton(logoutButton);
-        logoutButton.addActionListener(e -> handleLogout());
+        logoutButton.addActionListener(e -> cerrarSession());
         logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(logoutButton);
 
@@ -134,21 +129,21 @@ public class ClienteDashboard extends JFrame {
         button.setFont(new Font("Arial", Font.PLAIN, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setBackground(COLOR_PRIMARY);
-        button.setForeground(COLOR_WHITE);
+        button.setBackground(COLOR_PRIMARIO);
+        button.setForeground(COLOR_BLANCO);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(COLOR_PRIMARY);
+        headerPanel.setBackground(COLOR_PRIMARIO);
         headerPanel.setPreferredSize(new Dimension(0, 60));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         // Información del usuario
         JLabel userLabel = new JLabel("Bienvenido, " + usuario.getNombre());
         userLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        userLabel.setForeground(COLOR_WHITE);
+        userLabel.setForeground(COLOR_BLANCO);
         headerPanel.add(userLabel, BorderLayout.WEST);
 
         return headerPanel;
@@ -157,27 +152,23 @@ public class ClienteDashboard extends JFrame {
     private void initializePanels() {
         // Panel de Mis Pedidos (Temporal hasta implementar MisPedidosPanel)
         panelMisPedidos = new JPanel();
-        panelMisPedidos.setBackground(COLOR_BACKGROUND);
+        panelMisPedidos.setBackground(COLOR_FONDO);
         panelMisPedidos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         // TODO: Implementar MisPedidosPanel
 
         // Panel de Seguimiento
         panelSeguimiento = new PanelSeguimiento();
 
-        // Panel de Perfil
-        panelPerfil = new PerfilPanelV1(usuario);
-
         // Panel de Historial (Temporal hasta implementar HistorialPanel)
         panelHistorial = new JPanel();
-        panelHistorial.setBackground(COLOR_BACKGROUND);
+        panelHistorial.setBackground(COLOR_FONDO);
         panelHistorial.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // TODO: Implementar HistorialPanel
 
         // Panel de Perfil
-        panelPerfil = new PerfilPanelV1(usuario);
+        panelPerfil = new PerfilPanel(usuario);
     }
 
-    private void handleLogout() {
+    private void cerrarSession() {
         int confirm = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea cerrar sesión?",
@@ -185,9 +176,7 @@ public class ClienteDashboard extends JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            dispose();
-            // TODO: Implementar lógica de cierre de sesión en el controlador
-            new LoginView().setVisible(true);
+            controlador.manejarCerradoSesion();
         }
     }
 }

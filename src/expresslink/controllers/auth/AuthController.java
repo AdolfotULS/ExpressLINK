@@ -25,7 +25,7 @@ public class AuthController {
                             rs.getString("telefono"),
                             RolUsuario.valueOf(rs.getString("rol")),
                             rs.getInt("sucursal_id") == 0 ? null
-                                    : obteneSucursal(rs.getInt("sucursal_id")));
+                                    : obtenerSucursal(rs.getInt("sucursal_id")));
                 }
                 return null;
             }
@@ -34,20 +34,7 @@ public class AuthController {
         }
     }
 
-    // public Transportista obtenerTransportista(Usuario usuario) {
-    // String query = "";
-    // try (Connection conn = DatabaseConnection.getConnection();
-    // PreparedStatement stmt = conn.prepareStatement(query)) {
-    // stmt.setString(1, email);
-    // } catch (SQLException e) {
-    // throw new SQLException("Error durante recoleccion de datos [Transportista]",
-    // e);ow
-    // }
-
-    // return null;
-    // }
-
-    public Sucursal obteneSucursal(int id) throws SQLException {
+    public Sucursal obtenerSucursal(int id) throws SQLException {
         if (id <= 0)
             return null;
         String query = "SELECT sucursal.nombre, sucursal.direccion, sucursal.ciudad FROM sucursal WHERE sucursal.id = ?";
@@ -89,7 +76,7 @@ public class AuthController {
             }
 
             // Si no existe, procedemos con el registro
-            String insertQuery = "INSERT INTO USUARIO (nombre, email, password, telefono, rol, sucursal_id) VALUES (?, ?, ?, ?, 'CLIENTE', NULL)";
+            String insertQuery = "INSERT INTO usuario (nombre, email, password, telefono, rol, sucursal_id) VALUES (?, ?, ?, ?, 'CLIENTE', NULL)";
             insertStmt = conn.prepareStatement(insertQuery);
             insertStmt.setString(1, nuevoUsuario.getNombre());
             insertStmt.setString(2, nuevoUsuario.getEmail());

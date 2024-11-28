@@ -2,9 +2,7 @@ package expresslink.controllers.auth;
 
 import expresslink.model.Usuario;
 import expresslink.model.enums.RolUsuario;
-import expresslink.view.login.RegisterView;
-import expresslink.view.login.LoginView;
-import javax.swing.JOptionPane;
+import expresslink.view.login.*;
 
 public class RegisterController {
     private final RegisterView vista;
@@ -13,7 +11,6 @@ public class RegisterController {
     public RegisterController(RegisterView vista) {
         this.vista = vista;
         this.authController = new AuthController();
-        this.vista.setControlador(this);
     }
 
     public void manejarRegistro(String nombre, String email, String password, String confirmPassword, String telefono) {
@@ -45,8 +42,8 @@ public class RegisterController {
             // Usuario newUsuario = new Usuario(nombre, email, password, telefono,
             // RolUsuario.CLIENTE);
             // Por defecto registramos como CLIENTE
-            // boolean registroExitoso = authController.registrarUsuario(newUsuario);
-            boolean registroExitoso = false;
+            Usuario nuevoCliente = new Usuario(nombre, email, confirmPassword, telefono, RolUsuario.CLIENTE);
+            boolean registroExitoso = authController.registrarUsuario(nuevoCliente);
 
             if (registroExitoso) {
                 mostrarExito("Usuario registrado exitosamente");
@@ -68,7 +65,6 @@ public class RegisterController {
 
     private void abrirLogin() {
         LoginView loginView = new LoginView();
-        LoginController loginController = new LoginController(loginView);
         loginView.setVisible(true);
     }
 

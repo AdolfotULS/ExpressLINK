@@ -13,15 +13,21 @@ public class LoginController {
     public LoginController(LoginView vista) {
         this.vista = vista;
         this.authController = new AuthController();
-        this.vista.setControlador(this);
     }
 
-    public void manejarInicioSesion(String email, String password) {
+    public Usuario obtenerUsuario() {
+        if (usuarioActual != null) {
+            return usuarioActual;
+        }
+        return null;
+    }
+
+    public boolean manejarInicioSesion(String email, String password) {
         try {
             // Validaciones básicas
             if (email.isEmpty() || password.isEmpty()) {
                 mostrarError("Por favor ingrese email y contraseña");
-                return;
+                return false;
             }
 
             // Intento de login
@@ -36,6 +42,7 @@ public class LoginController {
                 vista.setVisible(false); // TEST
                 // vista.dispose(); // Cerrar ventana de login
                 mostrarInformacion("Usted ha Iniciado session como " + usuarioActual.getNombre(), "Exitoso");
+                return true;
             } else {
                 mostrarError("Credenciales inválidas");
             }
@@ -44,12 +51,12 @@ public class LoginController {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
 
     public void manejarRegistro() {
         // Abrir ventana de registro
         RegisterView registerView = new RegisterView();
-        RegisterController registerController = new RegisterController(registerView);
         registerView.setVisible(true);
         vista.dispose(); // Cerrar ventana de login
     }
@@ -57,7 +64,6 @@ public class LoginController {
     public void manejarRecuperarContrasena() {
         // Abrir ventana de recuperación de contraseña
         ForgotPasswordView forgotPasswordView = new ForgotPasswordView();
-        ForgotPasswordController forgotPasswordController = new ForgotPasswordController(forgotPasswordView);
         forgotPasswordView.setVisible(true);
         vista.dispose(); // Cerrar ventana de login
     }

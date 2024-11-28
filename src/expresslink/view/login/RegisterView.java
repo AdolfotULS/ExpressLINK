@@ -15,10 +15,7 @@ public class RegisterView extends JFrame {
 
     public RegisterView() {
         inicializarGUI();
-    }
-
-    public void setControlador(RegisterController controlador) {
-        this.controlador = controlador;
+        this.controlador = new RegisterController(this);
     }
 
     private void inicializarGUI() {

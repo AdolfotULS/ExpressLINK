@@ -8,18 +8,18 @@ import expresslink.view.login.LoginView;
 public class ClienteController {
     private ClienteDashboard vista;
     private Usuario usuario;
-    private LoginController cLoginController;
+    private LoginView loginView;
 
-    public ClienteController(Usuario usuario, LoginView loginView, LoginController loginController) {
+    public ClienteController(Usuario usuario, LoginView loginView, ClienteDashboard vista) {
         this.usuario = usuario;
         this.vista = vista;
-        this.vista.setControlador(this);
+        this.loginView = loginView;
     }
 
     public void manejarCerradoSesion() {
         // Limpiar usuario
-
-        cLoginController.cerrarSesion();
+        loginView.controlador.cerrarSesion(); // Cerramos Session
+        vista.dispose(); // Cerrar
     }
 
 }
