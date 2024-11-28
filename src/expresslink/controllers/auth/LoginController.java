@@ -32,7 +32,9 @@ public class LoginController {
             if (usuarioActual != null) {
                 vista.limpiarCampos();
                 abrirDashboardSegunRol();
-                vista.dispose(); // Cerrar ventana de login
+
+                vista.setVisible(false); // TEST
+                // vista.dispose(); // Cerrar ventana de login
                 mostrarInformacion("Usted ha Iniciado session como " + usuarioActual.getNombre(), "Exitoso");
             } else {
                 mostrarError("Credenciales inválidas");
@@ -67,7 +69,7 @@ public class LoginController {
         try {
             switch (usuarioActual.getRol()) {
                 case CLIENTE:
-                    //new ClienteDashboard(usuarioActual).setVisible(true);
+                    new ClienteDashboard(usuarioActual, vista).setVisible(true);
                     break;
                 case TRANSPORTISTA:
                     // new TransportistaDashboard(usuarioActual).setVisible(true);

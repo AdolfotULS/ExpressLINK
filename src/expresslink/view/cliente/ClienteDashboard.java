@@ -1,6 +1,7 @@
 package expresslink.view.cliente;
 
 import expresslink.model.Usuario;
+import expresslink.controllers.auth.LoginController;
 import expresslink.controllers.cliente.ClienteController;
 import expresslink.view.components.*;
 import expresslink.view.login.LoginView;
@@ -12,11 +13,14 @@ public class ClienteDashboard extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private Usuario usuario;
+
+    // Utilidades
     private ClienteController controlador;
+    private LoginView loginView;
 
     // Paneles principales
     private JPanel panelMisPedidos;
-    private  panelSeguimiento;
+    private PanelSeguimiento panelSeguimiento;
     private JPanel panelHistorial;
     private PerfilPanelV1 panelPerfil;
 
@@ -25,10 +29,15 @@ public class ClienteDashboard extends JFrame {
     private static final Color COLOR_BACKGROUND = new Color(240, 242, 245); // Gris claro
     private static final Color COLOR_WHITE = Color.WHITE;
 
-    public ClienteDashboard(Usuario usuario) {
+    public ClienteDashboard(Usuario usuario, LoginView loginView, LoginController cLoginController) {
         this.usuario = usuario;
-        this.controlador = new ClienteController();
+        this.controlador = new ClienteController(usuario, loginView, cLoginController);
+        this.loginView = loginView;
         initComponents();
+    }
+
+    public void setControlador(ClienteController controlador) {
+        this.controlador = controlador;
     }
 
     private void initComponents() {
@@ -112,7 +121,7 @@ public class ClienteDashboard extends JFrame {
         button.addActionListener(e -> {
             cardLayout.show(cardPanel, cardName);
             if (cardName.equals("SEGUIMIENTO")) {
-                panelSeguimiento.resetBusqueda(); // Limpiar búsqueda anterior si existe
+                // panelSeguimiento.resetBusqueda(); // Limpiar búsqueda anterior si existe
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -153,7 +162,7 @@ public class ClienteDashboard extends JFrame {
         // TODO: Implementar MisPedidosPanel
 
         // Panel de Seguimiento
-        panelSeguimiento = new SeguimientoPanel();
+        panelSeguimiento = new PanelSeguimiento();
 
         // Panel de Perfil
         panelPerfil = new PerfilPanelV1(usuario);
