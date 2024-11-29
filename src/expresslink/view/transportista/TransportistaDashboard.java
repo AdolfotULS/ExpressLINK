@@ -110,8 +110,8 @@ public class TransportistaDashboard extends JFrame {
         buttonPanel.add(deliverButton);
         card.add(buttonPanel, BorderLayout.EAST);
 
-        // Hover effect
-        addHoverEffect(card, infoPanel, headerPanel, clientPanel, buttonPanel);
+    // Efecto de desplazamiento
+    addHoverEffect(card, infoPanel, headerPanel, clientPanel, buttonPanel);
 
         return card;
     }
