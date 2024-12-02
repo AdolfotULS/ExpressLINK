@@ -13,14 +13,15 @@ public class ClienteDashboard extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private Usuario usuario;
+    private RefreshablePanel panelActual;
 
     // Utilidades
     private ClienteController controlador;
 
     // Paneles principales
-    private JPanel panelMisPedidos;
+    private MisPedidosPanel panelMisPedidos;
     private PanelSeguimiento panelSeguimiento;
-    private JPanel panelHistorial;
+    private HistorialPanel panelHistorial;
     private PerfilPanel panelPerfil;
 
     // Colores
@@ -114,9 +115,33 @@ public class ClienteDashboard extends JFrame {
         JButton button = new JButton(text);
         styleButton(button);
         button.addActionListener(e -> {
+            // Detener actualización del panel anterior si existe
+            if (panelActual != null) {
+                panelActual.stopRefresh();
+            }
+
+            // Mostrar nuevo panel
             cardLayout.show(cardPanel, cardName);
-            if (cardName.equals("SEGUIMIENTO")) {
-                // panelSeguimiento.resetBusqueda(); // Limpiar búsqueda anterior si existe
+
+            // Actualizar referencia al panel actual
+            switch (cardName) {
+                case "HISTORIAL":
+                    panelActual = (RefreshablePanel) panelHistorial;
+                    break;
+                case "SEGUIMIENTO":
+                    panelActual = (RefreshablePanel) panelSeguimiento;
+                    break;
+                case "PEDIDOS":
+                    panelActual = (RefreshablePanel) panelMisPedidos;
+                    break;
+                // ... otros casos según necesidad
+                default:
+                    panelActual = null;
+            }
+
+            // Refrescar datos del nuevo panel si es necesario
+            if (panelActual != null) {
+                panelActual.refreshData();
             }
         });
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -151,18 +176,14 @@ public class ClienteDashboard extends JFrame {
 
     private void initializePanels() {
         // Panel de Mis Pedidos (Temporal hasta implementar MisPedidosPanel)
-        panelMisPedidos = new JPanel();
-        panelMisPedidos.setBackground(COLOR_FONDO);
-        panelMisPedidos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // TODO: Implementar MisPedidosPanel
+        panelMisPedidos = new MisPedidosPanel(usuario);
 
         // Panel de Seguimiento
         panelSeguimiento = new PanelSeguimiento();
 
         // Panel de Historial (Temporal hasta implementar HistorialPanel)
-        panelHistorial = new JPanel();
-        panelHistorial.setBackground(COLOR_FONDO);
-        panelHistorial.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panelHistorial = new HistorialPanel(usuario);
+        // panelHistorial.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Panel de Perfil
         panelPerfil = new PerfilPanel(usuario);

@@ -3,14 +3,18 @@ package expresslink.view.cliente;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
+
+import expresslink.model.HistorialItem;
 import expresslink.model.Usuario;
+import expresslink.view.components.RefreshablePanel;
 import expresslink.controllers.cliente.HistorialController;
 
-public class HistorialPanel extends JPanel {
+public class HistorialPanel extends JPanel implements RefreshablePanel {
     private static final Color COLOR_PRIMARIO = new Color(33, 150, 243);
     private static final Color COLOR_FONDO = new Color(240, 242, 245);
     private static final Color COLOR_BLANCO = Color.WHITE;
@@ -29,7 +33,24 @@ public class HistorialPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(COLOR_FONDO);
         inicializarComponentes();
+        // Escuchar cuando el panel se hace visible
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                refreshData();
+            }
+        });
+
+        cargarDatos(); // Carga inicial
+    }
+
+    @Override   
+    public void refreshData() {
         cargarDatos();
+    }
+
+    @Override
+    public void stopRefresh() {
     }
 
     private void inicializarComponentes() {
@@ -104,46 +125,6 @@ public class HistorialPanel extends JPanel {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-        }
-    }
-
-    // Clase interna para manejar los datos de cada fila
-    public static class HistorialItem {
-        private String numeroSeguimiento;
-        private String destinatario;
-        private String direccion;
-        private Date fechaEstimada;
-        private double costo;
-
-        // Constructor
-        public HistorialItem(String numeroSeguimiento, String destinatario,
-                String direccion, Date fechaEstimada, double costo) {
-            this.numeroSeguimiento = numeroSeguimiento;
-            this.destinatario = destinatario;
-            this.direccion = direccion;
-            this.fechaEstimada = fechaEstimada;
-            this.costo = costo;
-        }
-
-        // Getters
-        public String getNumeroSeguimiento() {
-            return numeroSeguimiento;
-        }
-
-        public String getDestinatario() {
-            return destinatario;
-        }
-
-        public String getDireccion() {
-            return direccion;
-        }
-
-        public Date getFechaEstimada() {
-            return fechaEstimada;
-        }
-
-        public double getCosto() {
-            return costo;
         }
     }
 }
