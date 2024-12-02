@@ -24,6 +24,8 @@ public class PerfilPanel extends JPanel {
     public PerfilPanel(Usuario usuario) {
         this.usuario = usuario;
         this.controlador = new PerfilController(usuario, this);
+        setLayout(new BorderLayout());
+        setBackground(COLOR_FONDO);
         inicializarGUI();
     }
 
@@ -147,52 +149,42 @@ public class PerfilPanel extends JPanel {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    private void aplicarCambios() {
-
-    }
-
     private void guardarCambios() {
         try {
-            // Crear una instancia del controlador
-            // controlador = new PerfilController();
+            boolean cambiosRealizados = false;
 
-            // Actualizar informacion basica
-            // Usuario nuevaInfo = new Usuario(nombreField.getText(),
-            // null, , TOOL_TIP_TEXT_KEY, null)
+            // Actualizar información básica si hubo cambios
+            if (!nombreField.getText().equals(usuario.getNombre()) ||
+                    !telefonoField.getText().equals(usuario.getTelefono())) {
 
-            // boolean infoActualizada = controlador.act(
-            // usuario,
-            // nombreField.getText().trim(),
-            // telefonoField.getText().trim());
+                boolean infoActualizada = controlador.actualizarInformacionUsuario(
+                        nombreField.getText().trim(),
+                        telefonoField.getText().trim());
 
-            boolean infoActualizada = false;
-            // Verificar si se esta intentando cambiar la contraseña
+                if (infoActualizada) {
+                    cambiosRealizados = true;
+                }
+            }
+
+            // Verificar si hay intento de cambio de contraseña
             String passwordActual = new String(passwordActualField.getPassword());
             String passwordNueva = new String(passwordNuevaField.getPassword());
             String confirmPassword = new String(confirmPasswordField.getPassword());
 
-            boolean contrasenaActualizada = true;
             if (!passwordActual.isEmpty() || !passwordNueva.isEmpty() || !confirmPassword.isEmpty()) {
-                contrasenaActualizada = controlador.actualizarContrasena(
-                        usuario,
+                boolean contrasenaActualizada = controlador.actualizarContrasena(
                         passwordActual,
                         passwordNueva,
                         confirmPassword);
+
+                if (contrasenaActualizada) {
+                    cambiosRealizados = true;
+                    limpiarCamposPassword();
+                }
             }
 
-            if (infoActualizada && contrasenaActualizada) {
-                // Mostrar mensaje de exito
-                JOptionPane.showMessageDialog(this,
-                        "Los cambios han sido guardados exitosamente",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                // Limpiar campos de contraseña
-                passwordActualField.setText("");
-                passwordNuevaField.setText("");
-                confirmPasswordField.setText("");
-            } else {
-                mostrarError("No se pudieron guardar algunos cambios");
+            if (cambiosRealizados) {
+                mostrarExito("Los cambios han sido guardados exitosamente");
             }
 
         } catch (IllegalArgumentException e) {
@@ -201,6 +193,12 @@ public class PerfilPanel extends JPanel {
             mostrarError("Error al guardar los cambios: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void limpiarCamposPassword() {
+        passwordActualField.setText("");
+        passwordNuevaField.setText("");
+        confirmPasswordField.setText("");
     }
 
     public void mostrarError(String mensaje) {

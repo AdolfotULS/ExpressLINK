@@ -11,27 +11,23 @@ import java.sql.PreparedStatement;
 
 public class PerfilController {
     private Usuario usuario;
-    private PerfilPanel vista;
+    private PerfilPanel view;
 
-    public PerfilController(Usuario usuario, PerfilPanel vista) {
-        this.vista = vista;
+    public PerfilController(Usuario usuario, PerfilPanel view) {
         this.usuario = usuario;
+        this.view = view;
     }
 
-    public boolean actualizarInformacionPerfil(Usuario nuevaInfo, String actualPassword) {
-        if (usuario.getNombre() == nuevaInfo.getNombre()) {
-            vista.mostrarExito("Cambio de Nombre");
+    // Actualiza información básica del usuario
+    public boolean actualizarInformacionUsuario(String nuevoNombre, String nuevoTelefono)
+            throws IllegalArgumentException, SQLException {
+        // Validaciones
+        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+            view.mostrarError("El nombre no puede estar vacío");
+            return false;
         }
-
-        if (usuario.getPassword() == nuevaInfo.getPassword()) {
-
-        }
-        return true;
-    }
-
-    public boolean actualizarInformacionUsuario(Usuario usuario, String nuevoNombre, String nuevoTelefono)
-            throws SQLException {
-        if (!validarDatosBasicos(nuevoNombre, nuevoTelefono)) {
+        if (!validarTelefonoChileno(nuevoTelefono)) {
+            view.mostrarError("El formato del teléfono debe ser +56XXXXXXXXX");
             return false;
         }
 
@@ -47,32 +43,31 @@ public class PerfilController {
             int filasAfectadas = stmt.executeUpdate();
 
             if (filasAfectadas > 0) {
-                // Actualizar el objeto Usuario si la actualización en BD fue exitosa
                 usuario.setNombre(nuevoNombre);
                 usuario.setTelefono(nuevoTelefono);
                 return true;
             }
-
             return false;
         }
     }
 
-    public boolean actualizarContrasena(Usuario usuario, String contrasenaActual,
-            String nuevaContrasena, String confirmacionContrasena) throws SQLException {
+    // Actualiza la contraseña del usuario
+    public boolean actualizarContrasena(String contrasenaActual, String nuevaContrasena,
+            String confirmacionContrasena) throws IllegalArgumentException, SQLException {
 
-        // Validar que las contraseñas nuevas coincidan
         if (!nuevaContrasena.equals(confirmacionContrasena)) {
-            throw new IllegalArgumentException("Las contraseñas nuevas no coinciden");
+            view.mostrarError("Las contraseñas nuevas no coinciden");
+            return false;
         }
 
-        // Validar la contraseña actual
         if (!verificarContrasenaActual(usuario.getId(), contrasenaActual)) {
-            throw new IllegalArgumentException("La contraseña actual es incorrecta");
+            view.mostrarError("La contraseña actual es incorrecta");
+            return false;
         }
 
-        // Validar la nueva contraseña
         if (!validarContrasena(nuevaContrasena)) {
-            throw new IllegalArgumentException("La nueva contraseña no cumple con los requisitos mínimos");
+            view.mostrarError("La contraseña no cumple los requisitos mínimos");
+            return false;
         }
 
         String query = "UPDATE usuario SET password = ? WHERE id = ?";
@@ -80,7 +75,7 @@ public class PerfilController {
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, nuevaContrasena); // En producción, aquí se debería hashear la contraseña
+            stmt.setString(1, nuevaContrasena);
             stmt.setInt(2, usuario.getId());
 
             int filasAfectadas = stmt.executeUpdate();
@@ -88,6 +83,7 @@ public class PerfilController {
         }
     }
 
+    // Métodos de validación privados
     private boolean verificarContrasenaActual(int userId, String contrasenaActual) throws SQLException {
         String query = "SELECT COUNT(*) FROM usuario WHERE id = ? AND password = ?";
 
@@ -105,37 +101,19 @@ public class PerfilController {
         }
     }
 
-    private boolean validarDatosBasicos(String nombre, String telefono) {
-        // Validar nombre
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío");
-        }
-
-        if (!validarTelefonoChileno(telefono)) {
-            throw new IllegalArgumentException("El formato del teléfono debe ser +56XXXXXXXXX");
-        }
-
-        return true;
-    }
-
-    private boolean validarEmail(String email) {
-        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        return email != null && email.matches(regex);
-    }
-
     private boolean validarContrasena(String contrasena) {
         if (contrasena == null || contrasena.isEmpty()) {
-            mostrarError("La contraseña no puede estar vacía.");
+            view.mostrarError("La contraseña no puede estar vacía.");
             return false;
         }
 
         if (contrasena.length() < 3) {
-            mostrarError("La contraseña no puede tener menos de 3 caracteres.");
+            view.mostrarError("La contraseña no puede tener menos de 3 caracteres.");
             return false;
         }
 
         if (contrasena.length() >= 100) {
-            mostrarError("La contraseña no puede tener más de 100 caracteres.");
+            view.mostrarError("La contraseña no puede tener más de 100 caracteres.");
             return false;
         }
 
@@ -144,7 +122,7 @@ public class PerfilController {
         // - Solo permita caracteres alfanuméricos y símbolos comunes seguros
         String regex = "^[A-Za-z0-9!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/|~`]+$";
         if (!contrasena.matches(regex)) {
-            mostrarError("La contraseña contiene caracteres no permitidos o espacios.");
+            view.mostrarError("La contraseña contiene caracteres no permitidos o espacios.");
             return false;
         }
 
@@ -154,29 +132,15 @@ public class PerfilController {
 
     private boolean validarTelefonoChileno(String telefono) {
         if (telefono == null || telefono.isEmpty()) {
-            mostrarError("El número de teléfono no puede estar vacío.");
             return false;
         }
 
-        // Expresión regular para números de teléfono chilenos
-        // - Deben comenzar con +56
-        // - Luego tienen que tener 9 dígitos después del prefijo internacional
         String regex = "^\\+56[2-9][0-9]{8}$";
-
-        if (!telefono.matches(regex)) {
-            mostrarError("El número de teléfono no es válido. Debe tener el formato +56XXXXXXXXX.");
-            return false;
-        }
-
-        // Si pasa todas las validaciones
-        return true;
+        return telefono.matches(regex);
     }
 
+    // Método para verificar estado de conexión
     public String obtenerEstadoConexion() {
         return DatabaseConnection.getConnectionStatus();
-    }
-
-    private void mostrarError(String mensaje) {
-        vista.mostrarError(mensaje);
     }
 }

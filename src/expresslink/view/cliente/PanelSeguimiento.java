@@ -5,5 +5,5 @@ import java.util.Objects;
 
 public class PanelSeguimiento extends JPanel {
     public PanelSeguimiento() {
-    }    
+    }
 }
