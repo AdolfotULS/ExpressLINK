@@ -1,23 +1,25 @@
 package expresslink.model;
+
 import expresslink.model.*;
 import java.sql.Date;
 
 public class LogTransportista {
     private int id;
-    private Transportista transportista ; // Relacion con Transportista
-    private TipoEvento tipoEvento ;
-    private Paquete paquete ; // Relacion con Paquete
-    private String descripcion ;
-    private Date fecha ;
-    private String metadata ;
+    private Transportista transportista; // Relacion con Transportista
+    private TipoEvento tipoEvento;
+    private Paquete paquete; // Relacion con Paquete
+    private String descripcion;
+    private Date fecha;
+    private String metadata;
 
-    enum TipoEvento {
+    public enum TipoEvento {
         ASIGNACION,
         ACTUALIZACION,
         FINALIZACION
     }
 
-    public LogTransportista(int id, Transportista transportista, TipoEvento tipoEvento, Paquete paquete, String descripcion, Date fecha, String metadata) {
+    public LogTransportista(int id, Transportista transportista, TipoEvento tipoEvento, Paquete paquete,
+            String descripcion, Date fecha, String metadata) {
         this.id = id;
         this.transportista = transportista;
         this.tipoEvento = tipoEvento;

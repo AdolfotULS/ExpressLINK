@@ -3,6 +3,8 @@ package expresslink.controllers.auth;
 import expresslink.model.*;
 import expresslink.view.cliente.*;
 import expresslink.view.login.*;
+import expresslink.view.transportista.TransportistaDashboard;
+
 import javax.swing.*;
 
 public class LoginController {
@@ -78,9 +80,7 @@ public class LoginController {
                     new ClienteDashboard(usuarioActual, vista).setVisible(true);
                     break;
                 case TRANSPORTISTA:
-                    // new TransportistaDashboard(usuarioActual).setVisible(true);
-                    mostrarInformacion("Dashboard de Transportista en desarrollo",
-                            "Administrador");
+                    new TransportistaDashboard(usuarioActual, vista).setVisible(true);
                     break;
                 case SUCURSAL:
                     // new SucursalDashboard(usuarioActual).setVisible(true);

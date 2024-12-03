@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 public class TarjetaHistorial extends JPanel {
     // Colores para representar el estado de la entrega (exitoso o fallido)
     private final Color SUCCESS_COLOR = new Color(46, 125, 50); // Verde
-    private final Color ERROR_COLOR = new Color(198, 40, 40);   // Rojo
+    private final Color ERROR_COLOR = new Color(198, 40, 40); // Rojo
 
     // Atributos para almacenar la informacion de cada entrega
     private String pedidoId;
@@ -22,7 +22,7 @@ public class TarjetaHistorial extends JPanel {
 
     // Constructor que inicializa la tarjeta con los datos de la entrega
     public TarjetaHistorial(String pedidoId, String transportista, String clientName,
-                            String address, String status, String time, int intentos, boolean success) {
+            String address, String status, String time, int intentos, boolean success) {
         this.pedidoId = pedidoId;
         this.transportista = transportista;
         this.clientName = clientName;
@@ -40,7 +40,8 @@ public class TarjetaHistorial extends JPanel {
     private void setupUI() {
         // Establecer un diseño de bordes con espacios
         setLayout(new BorderLayout(10, 5));
-        // Cambiar el color de fondo dependiendo del estado (verde para exitoso, rojo para fallido)
+        // Cambiar el color de fondo dependiendo del estado (verde para exitoso, rojo
+        // para fallido)
         setBackground(success ? new Color(232, 245, 233) : new Color(255, 235, 238));
         setBorder(new EmptyBorder(10, 15, 10, 15)); // Agregar margen interno
 
@@ -129,35 +130,4 @@ public class TarjetaHistorial extends JPanel {
 
         return detailsPanel;
     }
-
-    /*
-    // Metodo de prueba para mostrar la tarjeta en una ventana
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Prueba de Tarjeta Historial");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 300);
-            frame.setLocationRelativeTo(null);
-
-            JPanel mainPanel = new JPanel();
-            mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-            mainPanel.setBackground(Color.WHITE);
-
-            // Crear tarjetas de prueba
-            mainPanel.add(new TarjetaHistorial(
-                "#2024-001", "Carlos Rodriguez", "Juan Perez",
-                "Av. Principal 123", "Entregado", "10:30", 1, true
-            ));
-            mainPanel.add(Box.createVerticalStrut(10));
-
-            mainPanel.add(new TarjetaHistorial(
-                "#2024-002", "Carlos Rodriguez", "Maria Garcia",
-                "Calle Norte 456", "No entregado", "12:00", 3, false
-            ));
-
-            frame.add(new JScrollPane(mainPanel));
-            frame.setVisible(true);
-        });
-    }
-    */
 }

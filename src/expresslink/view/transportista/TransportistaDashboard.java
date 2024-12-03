@@ -2,30 +2,76 @@ package expresslink.view.transportista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalTime;
+
 import javax.swing.border.*;
 
+import expresslink.controllers.transportista.TransportistaController;
 import expresslink.model.Transportista;
 import expresslink.model.Usuario;
+import expresslink.view.login.LoginView;
+
+// En TransportistaDashboard.java
+import java.util.List;
+
+// En TransportistaController.java 
+import java.util.List;
+import java.util.ArrayList;
 
 public class TransportistaDashboard extends JFrame {
-    private final Color COLOR_PRIMARIO = new Color(33, 150, 243); // Azul principal
-    private final Color COLOR_FONDO = Color.WHITE; // Fondo blanco
+    private final Color COLOR_PRIMARIO = new Color(33, 150, 243);
+    private final Color COLOR_FONDO = Color.WHITE;
 
-    // Datos Base de Dato
     private Usuario usuario;
     private Transportista transportista;
+    private TransportistaController controlador;
+    private LoginView view;
 
-    // Paneles globales para organizar contenido
+    private JLabel completadasLabel;
+    private JLabel tiempoPromedioLabel;
+    private int paquetesTotales;
+    private int paquetesProcesados;
+    private final LocalTime startTime;
+    private double tiempoPromedio;
+
     private JPanel mainPanel;
-    private JPanel entriesPanel; // Panel donde se agregaran las tarjetas de historial
-    private String transportistaName; // Nombre del transportista
+    private JPanel deliveriesPanel; // Hacer panel de entregas accesible
+    private JPanel entriesPanel;
+    private String transportistaName;
 
-    // Constructor de la clase que inicializa la ventana.
-
-    public TransportistaDashboard(Usuario usuario) {
+    public TransportistaDashboard(Usuario usuario, LoginView view) {
         this.usuario = usuario;
-        this.transportistaName = usuario.getNombre();
+        this.controlador = new TransportistaController(usuario);
+        this.view = view;
+        this.paquetesTotales = 0;
+        this.paquetesProcesados = 0;
+        this.startTime = LocalTime.now();
+        this.tiempoPromedio = 0.0;
+
+        try {
+            this.transportista = controlador.obtenerDatosTransportista();
+            if (this.transportista == null) {
+                throw new RuntimeException("No se encontraron datos de transportista");
+            }
+            this.transportistaName = transportista.getNombre();
+
+            // Actualizar disponibilidad al iniciar
+            controlador.actualizarDisponibilidad(true);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar datos del transportista: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            dispose();
+            return;
+        }
+
         inicializarGUI();
+        cargarPedidosPendientes();
+        actualizarEstadisticas(false);
     }
 
     private void inicializarGUI() {
@@ -60,57 +106,124 @@ public class TransportistaDashboard extends JFrame {
 
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(COLOR_PRIMARIO); // Fondo azul
-        headerPanel.setBorder(new EmptyBorder(15, 15, 15, 15)); // Margen interno
+        headerPanel.setBackground(COLOR_PRIMARIO);
+        headerPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        // Titulo del encabezado
+        // Título
         JLabel titleLabel = new JLabel("Panel de Transportista");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        titleLabel.setForeground(Color.WHITE); // Texto en blanco
+        titleLabel.setForeground(Color.WHITE);
 
-        headerPanel.add(titleLabel, BorderLayout.WEST); // Alinear a la izquierda
+        // Panel derecho para botón de cerrar sesión
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.setBackground(COLOR_PRIMARIO);
+
+        JButton logoutButton = new JButton("Cerrar Sesión");
+        logoutButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        logoutButton.setBackground(new Color(255, 87, 34)); // Color rojo-naranja
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setFocusPainted(false);
+        logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        logoutButton.addActionListener(e -> cerrarSesion());
+
+        rightPanel.add(logoutButton);
+
+        headerPanel.add(titleLabel, BorderLayout.WEST);
+        headerPanel.add(rightPanel, BorderLayout.EAST);
+
         return headerPanel;
+    }
+
+    private void cerrarSesion() {
+        try {
+            // Actualizar estado a no disponible
+            controlador.actualizarDisponibilidad(false);
+
+            // Cerrar ventana actual
+            this.dispose();
+
+            // Volver a la pantalla de login
+            view.controlador.cerrarSesion();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al actualizar estado: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
     }
 
     // Crea el panel de entregas pendientes.
 
     private JPanel createPendingDeliveriesPanel() {
-        JPanel panel = createBasePanel("Entregas Pendientes"); // Panel base con titulo
+        JPanel panel = createBasePanel("Entregas Pendientes");
 
         // Panel interno para las tarjetas de entregas
-        JPanel deliveriesPanel = new JPanel();
-        deliveriesPanel.setLayout(new BoxLayout(deliveriesPanel, BoxLayout.Y_AXIS)); // Organizar en columnas
+        deliveriesPanel = new JPanel(); // Inicializar el panel
+        deliveriesPanel.setLayout(new BoxLayout(deliveriesPanel, BoxLayout.Y_AXIS));
         deliveriesPanel.setBackground(COLOR_FONDO);
 
-        // Agregar ejemplos de tarjetas de pedidos
-        deliveriesPanel.add(new TarjetaPedido("#2024-001", "Juan Perez", "Av. Principal 123"));
-        deliveriesPanel.add(Box.createVerticalStrut(10)); // Espaciado
-        deliveriesPanel.add(new TarjetaPedido("#2024-002", "Maria Garcia", "Calle Norte 456"));
-        deliveriesPanel.add(Box.createVerticalStrut(10));
-        deliveriesPanel.add(new TarjetaPedido("#2024-003", "Carlos Lopez", "Av. Central 321"));
+        // El panel empieza vacío - los pedidos se cargan en cargarPedidosPendientes()
 
-        // Hacer que el panel sea desplazable
         JScrollPane scrollPane = new JScrollPane(deliveriesPanel);
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        panel.add(scrollPane, BorderLayout.CENTER); // Agregar al panel principal
+        panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
+    }
+
+    public synchronized void actualizarEstadisticas(boolean process) {
+        try {
+            if (process) {
+                this.paquetesProcesados++;
+
+                // Calculate elapsed time in minutes
+                LocalTime currentTime = LocalTime.now();
+                long elapsedMinutes = startTime.until(currentTime, java.time.temporal.ChronoUnit.MINUTES);
+
+                // Calculate average time per delivery
+                this.tiempoPromedio = (double) elapsedMinutes / paquetesProcesados;
+            }
+
+            // Update labels
+            if (completadasLabel != null) {
+                completadasLabel.setText(String.format("Entregas Completadas: %d/%d",
+                        paquetesProcesados, paquetesTotales));
+            }
+
+            if (tiempoPromedioLabel != null) {
+                tiempoPromedioLabel.setText(String.format("Tiempo promedio: %.1f min",
+                        tiempoPromedio));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Crea el panel de resumen diario y el historial.
 
     private JPanel createSummaryPanel() {
-        JPanel panel = new JPanel(new BorderLayout(0, 20)); // Layout con espaciado
+        JPanel panel = new JPanel(new BorderLayout(0, 20));
         panel.setBackground(COLOR_FONDO);
 
-        // Panel de resumen del dia
-        JPanel summaryPanel = createBasePanel("Resumen del Dia");
-        JPanel statsPanel = new JPanel(new GridLayout(2, 1, 5, 5)); // Layout en filas
-        statsPanel.setBackground(new Color(240, 247, 255)); // Fondo claro
-        statsPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Margen interno
-        statsPanel.add(new JLabel("Entregas Completadas: 8/15"));
-        statsPanel.add(new JLabel("Tiempo promedio: 15 min"));
+        // Panel de resumen del día
+        JPanel summaryPanel = createBasePanel("Resumen del Día");
+        JPanel statsPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        statsPanel.setBackground(new Color(240, 247, 255));
+        statsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Crear y guardar referencias a los labels
+        completadasLabel = new JLabel("Entregas Completadas: 0/0");
+        tiempoPromedioLabel = new JLabel("Tiempo promedio: 0 min");
+
+        statsPanel.add(completadasLabel);
+        statsPanel.add(tiempoPromedioLabel);
+
         summaryPanel.add(statsPanel, BorderLayout.CENTER);
         panel.add(summaryPanel, BorderLayout.NORTH);
 
@@ -119,12 +232,6 @@ public class TransportistaDashboard extends JFrame {
         entriesPanel = new JPanel(); // Panel global para agregar entradas
         entriesPanel.setLayout(new BoxLayout(entriesPanel, BoxLayout.Y_AXIS));
         entriesPanel.setBackground(COLOR_FONDO);
-
-        // Agregar ejemplos de historial
-        entriesPanel.add(new TarjetaHistorial(
-                "#2024-000", transportistaName, "Juan Perez", "Av. Principal 123",
-                "Entregado", "10:30", 1, true));
-        entriesPanel.add(Box.createVerticalStrut(10));
 
         // Hacer el historial desplazable
         JScrollPane scrollPane = new JScrollPane(entriesPanel);
@@ -159,23 +266,52 @@ public class TransportistaDashboard extends JFrame {
 
     public void addHistoryEntry(String pedidoId, String clientName, String address,
             String status, String time, int intentos, boolean success) {
+        // Agregar al inicio del panel para mostrar los más recientes primero
         entriesPanel.add(new TarjetaHistorial(
-                pedidoId, transportistaName, clientName, address, status, time, intentos, success));
-        entriesPanel.add(Box.createVerticalStrut(10)); // Espaciado entre tarjetas
-        entriesPanel.revalidate(); // Actualizar el panel
-        entriesPanel.repaint(); // Redibujar el panel
+                pedidoId, transportistaName, clientName, address,
+                status, time, intentos, success), 0);
+        entriesPanel.add(Box.createVerticalStrut(10), 1);
+
+        // Actualizar UI
+        entriesPanel.revalidate();
+        entriesPanel.repaint();
+
+        // Si el panel tiene muchas entradas, considerar limitar
+        if (entriesPanel.getComponentCount() > 50) { // 25 entradas * 2 (tarjeta + espacio)
+            entriesPanel.remove(entriesPanel.getComponentCount() - 1); // Remover último espacio
+            entriesPanel.remove(entriesPanel.getComponentCount() - 1); // Remover última tarjeta
+        }
     }
 
-    // Metodo principal para ejecutar el programa.
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            TransportistaDashboard dashboard = new TransportistaDashboard(new Usuario("ado", null, null, null, null));
-            dashboard.setVisible(true);
+    void cargarPedidosPendientes() {
+        try {
+            // Limpiar entradas existentes
+            deliveriesPanel.removeAll();
 
-            // Ejemplo de agregar una entrada al historial despues de mostrar la ventana
-            dashboard.addHistoryEntry(
-                    "#2024-005", "Carlos Lopez", "Av. Central 321",
-                    "Entregado", "13:00", 1, true);
-        });
+            List<TarjetaPedido> pedidos = controlador.obtenerPedidosAsignados();
+            if (paquetesTotales == 0) {
+                this.paquetesTotales = pedidos.size();
+            }
+
+            for (TarjetaPedido pedido : pedidos) {
+                // Configurar dashboard antes de agregar al panel
+                pedido.setDashboard(this);
+
+                // Agregar al panel y asegurar que tenga un contenedor padre
+                deliveriesPanel.add(pedido);
+                deliveriesPanel.add(Box.createVerticalStrut(10));
+            }
+
+            // Actualizar UI
+            deliveriesPanel.revalidate();
+            deliveriesPanel.repaint();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar pedidos: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 }

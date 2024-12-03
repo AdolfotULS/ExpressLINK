@@ -20,7 +20,7 @@ public class HistorialController {
         String query = "SELECT num_seguimiento, destinatario, dir_destino, fecha_estimada, costo " +
                 "FROM paquete " +
                 "WHERE (cliente_id = ? OR email_cliente = ?) " +
-                "AND estado = 'ENTREGADO' AND estado = 'CANCELADO'" +
+                "AND (estado = 'ENTREGADO' OR estado = 'CANCELADO') " +
                 "ORDER BY fecha_estimada DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();

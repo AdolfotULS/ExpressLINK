@@ -8,9 +8,9 @@ public class Paquete {
     private int id;
     private String numSeguimiento;
     private String emailCliente;
-    private Usuario cliente; //Relacion con usuario
-    private Sucursal sucursalOrigen; //Relacion con sucursal 
-    private Transportista transportista; //Relacion con transportista 
+    private Usuario cliente; // Relacion con usuario
+    private Sucursal sucursalOrigen; // Relacion con sucursal
+    private Transportista transportista; // Relacion con transportista
     private String destinatario;
     private String direccionDestino;
     private String dimensionesPeso;
@@ -19,11 +19,14 @@ public class Paquete {
     private Date fechaCreacion;
     private Date fechaEstimada;
     private int intentosEntrega;
-    private Usuario usuarioCreador; //Relacion con Usuario
+    private Usuario usuarioCreador; // Relacion con Usuario
 
-    //Constructor
+    // Constructor
 
-    public Paquete(int id, String numSeguimiento, String emailCliente, Usuario cliente, Sucursal sucursalOrigen, Transportista transportista, String destinatario, String direccionDestino, String dimensionesPeso, double costo, EstadoPaquete estado, Date fechaCreacion, Date fechaEstimada, int intentosEntrega, Usuario usuarioCreador) {
+    public Paquete(int id, String numSeguimiento, String emailCliente, Usuario cliente, Sucursal sucursalOrigen,
+            Transportista transportista, String destinatario, String direccionDestino, String dimensionesPeso,
+            double costo, EstadoPaquete estado, Date fechaCreacion, Date fechaEstimada, int intentosEntrega,
+            Usuario usuarioCreador) {
         this.id = id;
         this.numSeguimiento = numSeguimiento;
         this.emailCliente = emailCliente;
@@ -39,6 +42,11 @@ public class Paquete {
         this.fechaEstimada = fechaEstimada;
         this.intentosEntrega = intentosEntrega;
         this.usuarioCreador = usuarioCreador;
+    }
+
+    public Paquete(int id) {
+        this.id = id;
+        // Los demás campos quedarán null/0 por defecto
     }
 
     public int getId() {
@@ -160,5 +168,5 @@ public class Paquete {
     public void setUsuarioCreador(Usuario usuarioCreador) {
         this.usuarioCreador = usuarioCreador;
     }
-    
+
 }
