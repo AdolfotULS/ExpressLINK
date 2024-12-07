@@ -4,22 +4,23 @@ import expresslink.model.*;
 import java.sql.Date;
 
 public class LogSucursal {
-    
-    private int id;
-    private Sucursal sucursal ; // Relacion con Sucursal
-    private TipoEvento tipoEvento;
-    private String descripcion ;
-    private Date fecha ;
-    private String metadata ;
-    private Usuario usuario ; // Relacion con Usuario
 
-    enum TipoEvento {
+    private int id;
+    private Sucursal sucursal; // Relacion con Sucursal
+    private TipoEvento tipoEvento;
+    private String descripcion;
+    private Date fecha;
+    private String metadata;
+    private Usuario usuario; // Relacion con Usuario
+
+    public enum TipoEvento {
         CREACION,
         ACTUALIZACION,
         ELIMINACION
     }
 
-    public LogSucursal(int id, Sucursal sucursal, TipoEvento tipoEvento, String descripcion, Date fecha, String metadata, Usuario usuario) {
+    public LogSucursal(int id, Sucursal sucursal, TipoEvento tipoEvento, String descripcion, Date fecha,
+            String metadata, Usuario usuario) {
         this.id = id;
         this.sucursal = sucursal;
         this.tipoEvento = tipoEvento;

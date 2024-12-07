@@ -2,8 +2,11 @@ package expresslink.view.sucursal;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+
 import javax.swing.border.*;
 
+import expresslink.controllers.sucursal.SucursalController;
 import expresslink.model.Sucursal;
 import expresslink.model.Usuario;
 import expresslink.view.login.LoginView;
@@ -20,10 +23,28 @@ public class SucursalDashboard extends JFrame {
     private LoginView loginView;
     private Usuario usuario;
     private Sucursal sucursal;
+    private SucursalController controlador;
 
     public SucursalDashboard(Usuario usuario, LoginView loginView) {
         this.usuario = usuario;
         this.loginView = loginView;
+        this.controlador = new SucursalController(usuario, this);
+
+        try {
+            this.sucursal = controlador.obtenerDatosSucursal();
+            if (this.sucursal == null) {
+                throw new RuntimeException("No se encontraron datos de Sucursal");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar datos del transportista: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            dispose();
+            return;
+        }
 
         inicializarGUI();
     }
