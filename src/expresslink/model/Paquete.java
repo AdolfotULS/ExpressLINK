@@ -13,7 +13,7 @@ public class Paquete {
     private Transportista transportista; // Relacion con transportista
     private String destinatario;
     private String direccionDestino;
-    private String dimensionesPeso;
+    private DimensionesPaquete dimensionesPeso;
     private double costo;
     private EstadoPaquete estado;
     private Date fechaCreacion;
@@ -24,7 +24,8 @@ public class Paquete {
     // Constructor
 
     public Paquete(int id, String numSeguimiento, String emailCliente, Usuario cliente, Sucursal sucursalOrigen,
-            Transportista transportista, String destinatario, String direccionDestino, String dimensionesPeso,
+            Transportista transportista, String destinatario, String direccionDestino,
+            DimensionesPaquete dimensionesPeso,
             double costo, EstadoPaquete estado, Date fechaCreacion, Date fechaEstimada, int intentosEntrega,
             Usuario usuarioCreador) {
         this.id = id;
@@ -81,7 +82,7 @@ public class Paquete {
         return direccionDestino;
     }
 
-    public String getDimensionesPeso() {
+    public DimensionesPaquete getDimensionesPeso() {
         return dimensionesPeso;
     }
 
@@ -141,7 +142,7 @@ public class Paquete {
         this.direccionDestino = direccionDestino;
     }
 
-    public void setDimensionesPeso(String dimensionesPeso) {
+    public void setDimensionesPeso(DimensionesPaquete dimensionesPeso) {
         this.dimensionesPeso = dimensionesPeso;
     }
 

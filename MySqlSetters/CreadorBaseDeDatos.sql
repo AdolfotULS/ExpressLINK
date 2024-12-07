@@ -51,6 +51,7 @@ CREATE TABLE PAQUETE (
     fecha_estimada DATETIME,
     intentos_entrega INT,
     usuario_creador_id INT,
+    fecha_actualizacion DATETIME,
     FOREIGN KEY (cliente_id) REFERENCES USUARIO(id),
     FOREIGN KEY (sucursal_origen_id) REFERENCES SUCURSAL(id),
     FOREIGN KEY (transportista_id) REFERENCES TRANSPORTISTA(id),

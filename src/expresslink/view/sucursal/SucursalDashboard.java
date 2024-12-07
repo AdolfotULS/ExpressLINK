@@ -71,7 +71,7 @@ public class SucursalDashboard extends JFrame {
         // Elementos del menú actualizados
         String[] menuItems = {
                 "Informacion General", // Cambiado de "Dashboard"
-                "Nuevo Pedido",
+                "Nuevo Paquete",
                 "Pedidos Pendientes",
                 "Pedidos en Transito",
                 "Entregas del Dia",
@@ -121,7 +121,7 @@ public class SucursalDashboard extends JFrame {
 
     private void createContentPanels() {
         contentPanel.add(createDashboardPanel(), "Dashboard");
-        contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Pedido");
+        contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Paquete");
         contentPanel.add(createPanelWithBackButton("Pedidos Pendientes"), "Pedidos Pendientes");
         contentPanel.add(createPanelWithBackButton("Pedidos en Transito"), "Pedidos en Transito");
         contentPanel.add(createPanelWithBackButton("Entregas del Dia"), "Entregas del Dia");
