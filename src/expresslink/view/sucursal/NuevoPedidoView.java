@@ -1,8 +1,14 @@
 package expresslink.view.sucursal;
+
 import javax.swing.*;
+import expresslink.model.*;
+
 import java.awt.*;
+
 //Chibi
 public class NuevoPedidoView extends JPanel {
+    private Usuario usuario;
+    private Sucursal sucursal;
 
     // Componentes graficos
     private JTextField remitenteNombreField, remitenteDNIField, remitenteTelefonoField, remitenteEmailField;
@@ -10,8 +16,15 @@ public class NuevoPedidoView extends JPanel {
     private JTextField altoField, anchoField, largoField, pesoField;
     private JButton generarPedidoBtn, cancelarBtn;
 
+    public NuevoPedidoView(Usuario usuario, Sucursal sucursal) {
+        this.usuario = usuario;
+        this.sucursal = sucursal;
+
+        inicializarGUI();
+    }
+
     // Constructor que crea y organiza los componentes
-    public NuevoPedidoView() {
+    private void inicializarGUI() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Margenes
@@ -76,7 +89,8 @@ public class NuevoPedidoView extends JPanel {
         resumenPanel.setLayout(new BorderLayout());
         resumenPanel.setBackground(new Color(230, 240, 255)); // Fondo azul claro
         resumenPanel.setBorder(BorderFactory.createLineBorder(borderColor));
-        JLabel resumenEnvioLabel = new JLabel("<html><div style='text-align: left;'>Resumen del Envio<br>Sucursal Origen: Central La Serena<br>Tipo de Envio: Local<br>Tiempo Estimado: 24 horas<br>Costo Total: $15,000</div></html>");
+        JLabel resumenEnvioLabel = new JLabel(
+                "<html><div style='text-align: left;'>Resumen del Envio<br>Sucursal Origen: Central La Serena<br>Tipo de Envio: Local<br>Tiempo Estimado: 24 horas<br>Costo Total: $15,000</div></html>");
         resumenEnvioLabel.setHorizontalAlignment(SwingConstants.LEFT);
         resumenPanel.add(resumenEnvioLabel, BorderLayout.CENTER);
         gbc.gridx = 0;
@@ -136,16 +150,5 @@ public class NuevoPedidoView extends JPanel {
         add(new JLabel(labelText), gbc);
         gbc.gridx = x + 1;
         add(textField, gbc);
-    }
-
-    // Metodo principal para mostrar la GUI
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Nuevo Pedido");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new NuevoPedidoView());
-        frame.setSize(900, 700);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }
