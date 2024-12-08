@@ -34,12 +34,12 @@ public class GestionPedidosView extends JPanel {
         add(titleLabel, BorderLayout.NORTH); // Agrega el titulo arriba
 
         // Columnas y datos de ejemplo para la tabla
-        String[] columnNames = {"ID Pedido", "Cliente", "Estado", "Transportista", "Fecha"};
+        String[] columnNames = { "ID Pedido", "Cliente", "Estado", "Transportista", "Fecha" };
         Object[][] data = {
-            {"001", "Cliente A", "Pendiente", "N/A", "2024-11-01"},
-            {"002", "Cliente B", "En Proceso", "Transportista X", "2024-11-02"},
-            {"003", "Cliente C", "Completado", "Transportista Y", "2024-10-30"},
-            {"004", "Cliente D", "Pendiente", "N/A", "2024-11-03"}
+                { "001", "Cliente A", "Pendiente", "N/A", "2024-11-01" },
+                { "002", "Cliente B", "En Proceso", "Transportista X", "2024-11-02" },
+                { "003", "Cliente C", "Completado", "Transportista Y", "2024-10-30" },
+                { "004", "Cliente D", "Pendiente", "N/A", "2024-11-03" }
         };
 
         DefaultTableModel tableModel = new DefaultTableModel(data, columnNames) {
@@ -62,14 +62,14 @@ public class GestionPedidosView extends JPanel {
         listaPedidosPanel.add(tableScrollPane, BorderLayout.CENTER);
 
         // Filtro para elegir estado de pedidos
-        filtroEstado = new JComboBox<>(new String[]{"Todos", "Pendiente", "En Proceso", "Completado"});
+        filtroEstado = new JComboBox<>(new String[] { "Todos", "Pendiente", "En Proceso", "Completado" });
         filtroEstado.setBackground(new Color(210, 225, 250)); // Color azul claro
         filtroEstado.setFont(new Font("Arial", Font.PLAIN, 14));
         filtroEstado.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         filtroEstado.addActionListener(e -> filtrarPedidosPorEstado());
 
         // ComboBox para cambiar el estado de un pedido
-        comboBoxEstado = new JComboBox<>(new String[]{"Pendiente", "En Proceso", "Completado"});
+        comboBoxEstado = new JComboBox<>(new String[] { "Pendiente", "En Proceso", "Completado" });
         comboBoxEstado.setBackground(new Color(210, 225, 250)); // Azul claro
         comboBoxEstado.setFont(new Font("Arial", Font.PLAIN, 14));
         comboBoxEstado.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -107,7 +107,8 @@ public class GestionPedidosView extends JPanel {
     private void cambiarEstadoPedido() {
         int selectedRow = pedidosTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione un pedido para cambiar el estado.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un pedido para cambiar el estado.", "Error",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         String nuevoEstado = (String) comboBoxEstado.getSelectedItem();
@@ -123,10 +124,10 @@ public class GestionPedidosView extends JPanel {
             tableModel.removeRow(i);
         }
         Object[][] todosLosDatos = {
-            {"001", "Cliente A", "Pendiente", "N/A", "2024-11-01"},
-            {"002", "Cliente B", "En Proceso", "Transportista X", "2024-11-02"},
-            {"003", "Cliente C", "Completado", "Transportista Y", "2024-10-30"},
-            {"004", "Cliente D", "Pendiente", "N/A", "2024-11-03"}
+                { "001", "Cliente A", "Pendiente", "N/A", "2024-11-01" },
+                { "002", "Cliente B", "En Proceso", "Transportista X", "2024-11-02" },
+                { "003", "Cliente C", "Completado", "Transportista Y", "2024-10-30" },
+                { "004", "Cliente D", "Pendiente", "N/A", "2024-11-03" }
         };
         for (Object[] fila : todosLosDatos) {
             if ("Todos".equals(estadoSeleccionado) || fila[2].equals(estadoSeleccionado)) {
@@ -156,5 +157,21 @@ public class GestionPedidosView extends JPanel {
         panel.add(label, BorderLayout.NORTH);
         panel.add(component, BorderLayout.CENTER);
         return panel;
+    }
+
+    public static void main(String[] args) {
+        // Crear el marco principal
+        JFrame frame = new JFrame("Gestión de Pedidos");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Agregar el panel GestionPedidosView al marco
+        GestionPedidosView gestionPedidosView = new GestionPedidosView();
+        frame.add(gestionPedidosView);
+
+        // Configurar el tamaño del marco
+        frame.setSize(800, 600); // Ancho x Alto
+
+        // Hacer visible el marco
+        frame.setVisible(true);
     }
 }

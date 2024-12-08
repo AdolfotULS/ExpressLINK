@@ -20,7 +20,7 @@ public class ClienteDashboard extends JFrame {
 
     // Paneles principales
     private MisPedidosPanel panelMisPedidos;
-    private PanelSeguimiento panelSeguimiento;
+    private SeguimientoPaquete panelSeguimiento;
     private HistorialPanel panelHistorial;
     private PerfilPanel panelPerfil;
 
@@ -179,7 +179,7 @@ public class ClienteDashboard extends JFrame {
         panelMisPedidos = new MisPedidosPanel(usuario);
 
         // Panel de Seguimiento
-        panelSeguimiento = new PanelSeguimiento();
+        panelSeguimiento = new SeguimientoPaquete();
 
         // Panel de Historial (Temporal hasta implementar HistorialPanel)
         panelHistorial = new HistorialPanel(usuario);
