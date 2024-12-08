@@ -51,7 +51,7 @@ public class SucursalDashboard extends JFrame {
     }
 
     private void inicializarGUI() {
-        setTitle("Express Link - Sucursal");
+        setTitle("Express Link - " + sucursal.getNombre() + " [" + sucursal.getCiudad() + "]");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 700);
         setLocationRelativeTo(null);
@@ -126,11 +126,12 @@ public class SucursalDashboard extends JFrame {
                 }
             });
 
-            // Necesitamos mapear "Informacion General" de vuelta a "Dashboard" para el
-            // CardLayout
             button.addActionListener(e -> {
                 String cardName = item.equals("Informacion General") ? "Dashboard" : item;
                 cardLayout.show(contentPanel, cardName);
+
+                // Actualizar título de la ventana con nombre de sección actual
+                setTitle("Express Link - " + sucursal.getNombre() + " [" + sucursal.getCiudad() + "] - " + item);
             });
 
             menuPanel.add(button);
@@ -143,12 +144,12 @@ public class SucursalDashboard extends JFrame {
 
     private void createContentPanels() {
         // Crear los paneles de contenido
-        contentPanel.add(createDashboardPanel(), "Dashboard");
+        contentPanel.add(new InformacionGeneralView(sucursal), "Dashboard");
         contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Paquete");
         contentPanel.add(createPanelWithBackButton("Pedidos Pendientes"), "Pedidos Pendientes");
         contentPanel.add(new PedidosTransitoView(sucursal), "Pedidos en Transito");
         contentPanel.add(new EntregasDiaView(sucursal), "Entregas del Dia");
-        contentPanel.add(createPanelWithBackButton("Reportes"), "Reportes");
+        contentPanel.add(new ReportesView(sucursal), "Reportes");
     }
 
     private JPanel createPanelWithBackButton(String panelName) {
@@ -201,92 +202,5 @@ public class SucursalDashboard extends JFrame {
 
         panel.add(headerPanel, BorderLayout.NORTH);
         return panel;
-    }
-
-    private JPanel createDashboardPanel() {
-        // Panel principal con márgenes
-        JPanel dashboardPanel = new JPanel(new BorderLayout(20, 20));
-        dashboardPanel.setBackground(BACKGROUND_COLOR);
-        dashboardPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        // Barra superior azul
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(PRIMARY_COLOR);
-        headerPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-
-        JLabel titleLabel = new JLabel("Sucursal Central - La Serena");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        titleLabel.setForeground(Color.WHITE);
-        headerPanel.add(titleLabel, BorderLayout.WEST);
-        dashboardPanel.add(headerPanel, BorderLayout.NORTH);
-
-        // Panel para las tarjetas de estado
-        JPanel cardsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
-        cardsPanel.setBackground(BACKGROUND_COLOR);
-
-        // Crear las tres tarjetas de estado
-        cardsPanel.add(createStatusCard("Pedidos Pendientes"));
-        cardsPanel.add(createStatusCard("En Transito"));
-        cardsPanel.add(createStatusCard("Entregados Hoy"));
-        dashboardPanel.add(cardsPanel, BorderLayout.CENTER);
-
-        // Panel para la tabla de pedidos recientes
-        JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setBackground(BACKGROUND_COLOR);
-        tablePanel.setBorder(new EmptyBorder(20, 0, 0, 0));
-
-        // Título de la sección
-        JLabel tableTitle = new JLabel("Pedidos Recientes");
-        tableTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        tablePanel.add(tableTitle, BorderLayout.NORTH);
-
-        // Tabla de pedidos recientes
-        String[] columnNames = { "N° Pedido", "Destinatario", "Estado", "Accion" };
-        Object[][] data = {
-                { "#2024-001", "Juan Perez", "Pendiente", "ver detalles" },
-                { "#2024-002", "Maria Garcia", "En Ruta", "ver detalles" }
-        };
-
-        JTable table = new JTable(data, columnNames);
-        table.setRowHeight(35);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
-
-        dashboardPanel.add(tablePanel, BorderLayout.SOUTH);
-
-        return dashboardPanel;
-    }
-
-    // Método auxiliar para crear las tarjetas de estado
-    private JPanel createStatusCard(String title) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(230, 230, 230), 1),
-                new EmptyBorder(15, 15, 15, 15)));
-
-        // Contenedor para centrar el contenido
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
-
-        // Texto del título
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-
-        // Añadir los componentes al contenedor
-        contentPanel.add(titleLabel);
-        contentPanel.add(Box.createVerticalStrut(10));
-
-        // Añadir el contenedor a la tarjeta
-        card.add(contentPanel);
-
-        return card;
     }
 }

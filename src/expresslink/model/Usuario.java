@@ -27,6 +27,13 @@ public class Usuario extends Persona {
         this.rol = rol;
     }
 
+    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol) {
+        super(id, nombre, email);
+        this.password = password;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
+
     // Getters and Setters
     public String getPassword() {
         return password;

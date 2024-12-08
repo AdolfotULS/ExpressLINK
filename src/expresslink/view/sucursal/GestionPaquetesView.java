@@ -1,5 +1,5 @@
 package expresslink.view.sucursal;
 
-public class PedidosPendientesView {
+public class GestionPaquetesView {
 
 }
