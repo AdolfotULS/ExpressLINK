@@ -73,7 +73,8 @@ public class DimensionesPaquete {
     }
 
     public double getVolumen() {
-        return this.ancho * this.largo * this.alto;
+        // Convertir de cm³ a m³ dividiendo entre 1,000,000
+        return (this.ancho * this.largo * this.alto) / 1_000_000.0;
     }
 
     public DimensionesPaquete ancho(double ancho) {

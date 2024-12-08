@@ -146,7 +146,7 @@ public class SucursalDashboard extends JFrame {
         // Crear los paneles de contenido
         contentPanel.add(new InformacionGeneralView(sucursal), "Dashboard");
         contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Paquete");
-        contentPanel.add(createPanelWithBackButton("Pedidos Pendientes"), "Pedidos Pendientes");
+        contentPanel.add(new GestionPaquetesView(usuario, sucursal), "Pedidos Pendientes");
         contentPanel.add(new PedidosTransitoView(sucursal), "Pedidos en Transito");
         contentPanel.add(new EntregasDiaView(sucursal), "Entregas del Dia");
         contentPanel.add(new ReportesView(sucursal), "Reportes");

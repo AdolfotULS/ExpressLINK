@@ -3,11 +3,11 @@ package expresslink.model;
 public class Vehiculo {
     private int id;
     private String patente;
-    private String capacidadVolumen;
+    private double capacidadVolumen;
 
-    //Constructor
+    // Constructor
 
-    public Vehiculo(int id, String patente, String capacidadVolumen){
+    public Vehiculo(int id, String patente, double capacidadVolumen) {
         this.id = id;
         this.patente = patente;
         this.capacidadVolumen = capacidadVolumen;
@@ -21,7 +21,7 @@ public class Vehiculo {
         return patente;
     }
 
-    public String getCapacidadVolumen() {
+    public double getCapacidadVolumen() {
         return capacidadVolumen;
     }
 
@@ -33,7 +33,7 @@ public class Vehiculo {
         this.patente = patente;
     }
 
-    public void setCapacidadVolumen(String capacidadVolumen) {
+    public void setCapacidadVolumen(double capacidadVolumen) {
         this.capacidadVolumen = capacidadVolumen;
     }
 

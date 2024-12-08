@@ -56,7 +56,7 @@ public class TransportistaController {
                     vehiculo = new Vehiculo(
                             rs.getInt("vehiculo_id"),
                             rs.getString("patente"),
-                            rs.getString("capacidad_volumen"));
+                            rs.getDouble("capacidad_volumen"));
                 }
 
                 // Crear objeto Transportista con todos los datos

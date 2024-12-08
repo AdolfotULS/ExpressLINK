@@ -100,7 +100,7 @@ public class ReportesController {
                     Vehiculo vehiculo = new Vehiculo(
                             rs.getInt("vehiculo_id"),
                             rs.getString("patente"),
-                            rs.getString("capacidad_volumen"));
+                            rs.getDouble("capacidad_volumen"));
 
                     Usuario userTransportista = new Usuario(
                             rs.getInt("transportista_id"),

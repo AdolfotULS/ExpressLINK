@@ -145,7 +145,9 @@ public class NuevoPedidoView extends JPanel {
         gbc.gridwidth = 4;
         gbc.anchor = GridBagConstraints.CENTER;
         add(buttonPanel, gbc);
-        limpiarCampos();
+
+        remitenteTelefonoField.setText("+56");
+        // limpiarCampos();
     }
 
     // Metodo para crear un campo de texto

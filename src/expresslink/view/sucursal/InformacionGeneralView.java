@@ -24,7 +24,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
     private final Font CARD_TITLE_FONT = new Font("Segoe UI", Font.BOLD, 16);
     private final Font COUNTER_FONT = new Font("Segoe UI", Font.BOLD, 40);
     private final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 14);
-    private final DecimalFormat numberFormat = new DecimalFormat("#,###");
 
     private InformacionGeneralController controlador;
     private Sucursal sucursal;
@@ -36,12 +35,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
     private JLabel pendientesLabel;
     private JLabel entregadosLabel;
     private JLabel transitoLabel;
-    private JLabel pendientesCounter;
-    private JLabel transitoCounter;
-    private JLabel entregadosCounter;
-    private JLabel pendientesSubtitle;
-    private JLabel transitoSubtitle;
-    private JLabel entregadosSubtitle;
     private DefaultTableModel tableModel;
     private JLabel lastUpdateLabel;
 
@@ -75,11 +68,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
         JPanel quickStatsPanel = createQuickStatsPanel();
         mainPanel.add(quickStatsPanel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Espaciado
-
-        // // Panel de métricas principales
-        // JPanel metricsPanel = createMetricsPanel();
-        // mainPanel.add(metricsPanel);
-        // mainPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Espaciado
 
         // Panel de la tabla
         JPanel tablePanel = createTablePanel();
@@ -185,28 +173,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
         return card;
     }
 
-    private JPanel createMetricsPanel() {
-        JPanel metricsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
-        metricsPanel.setBackground(BACKGROUND_COLOR);
-        metricsPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
-
-        pendientesCounter = createCounterLabel("0");
-        transitoCounter = createCounterLabel("0");
-        entregadosCounter = createCounterLabel("0");
-
-        pendientesSubtitle = createSubtitleLabel("paquetes pendientes");
-        transitoSubtitle = createSubtitleLabel("paquetes en tránsito");
-        entregadosSubtitle = createSubtitleLabel("entregas realizadas hoy");
-
-        metricsPanel.add(
-                createStatusCard("Pedidos Pendientes", pendientesCounter, pendientesSubtitle, new Color(255, 152, 0)));
-        metricsPanel.add(createStatusCard("En Tránsito", transitoCounter, transitoSubtitle, new Color(33, 150, 243)));
-        metricsPanel
-                .add(createStatusCard("Entregados Hoy", entregadosCounter, entregadosSubtitle, new Color(76, 175, 80)));
-
-        return metricsPanel;
-    }
-
     private JPanel createTablePanel() {
         JPanel tablePanel = new JPanel(new BorderLayout(0, 10));
         tablePanel.setBackground(BACKGROUND_COLOR);
@@ -249,59 +215,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
         return tablePanel;
     }
 
-    private JLabel createCounterLabel(String initialValue) {
-        JLabel label = new JLabel(initialValue, SwingConstants.CENTER);
-        label.setFont(COUNTER_FONT);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        return label;
-    }
-
-    private JLabel createSubtitleLabel(String text) {
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setFont(SUBTITLE_FONT);
-        label.setForeground(Color.GRAY);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        return label;
-    }
-
-    private JPanel createStatusCard(String title, JLabel counter, JLabel subtitle, Color accentColor) {
-        JPanel card = new JPanel();
-        card.setLayout(new GridBagLayout());
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(CARD_BORDER, 1),
-                new EmptyBorder(15, 15, 15, 15)));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(0, 0, 15, 0);
-
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new BorderLayout());
-        titlePanel.setBackground(Color.WHITE);
-        titlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, accentColor));
-
-        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-        titleLabel.setFont(CARD_TITLE_FONT);
-        titlePanel.add(titleLabel);
-
-        gbc.weighty = 0;
-        card.add(titlePanel, gbc);
-
-        gbc.insets = new Insets(15, 0, 5, 0);
-        gbc.weighty = 1;
-        counter.setForeground(accentColor);
-        card.add(counter, gbc);
-
-        gbc.insets = new Insets(0, 0, 0, 0);
-        gbc.weighty = 0;
-        card.add(subtitle, gbc);
-
-        return card;
-    }
-
     @Override
     public void refreshData() {
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -325,16 +238,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
             pendientesLabel.setText(String.valueOf(contadoresActuales[0]));
             transitoLabel.setText(String.valueOf(contadoresActuales[1]));
             entregadosLabel.setText(String.valueOf(contadoresHoy[2])); // Solo los entregados hoy
-
-            // Actualizar contadores principales con animación
-            // actualizarContadorConAnimacion(pendientesCounter, contadoresActuales[0]);
-            // actualizarContadorConAnimacion(transitoCounter, contadoresActuales[1]);
-            // actualizarContadorConAnimacion(entregadosCounter, contadoresHoy[2]);
-
-            // Actualizar subtítulos
-            // pendientesSubtitle.setText("paquetes pendientes");
-            // transitoSubtitle.setText("paquetes en tránsito");
-            // entregadosSubtitle.setText("entregas realizadas hoy");
 
             // Actualizar tabla
             tableModel.setRowCount(0);
@@ -361,28 +264,6 @@ public class InformacionGeneralView extends JPanel implements RefreshablePanel {
             setCursor(Cursor.getDefaultCursor());
         }
     }
-
-    // private void actualizarContadorConAnimacion(JLabel counter, int nuevoValor) {
-    // Timer timer = new Timer(50, null);
-    // final int[] valorActual = {
-    // Integer.parseInt(counter.getText().replaceAll(",", "")) };
-    // final int incremento = (nuevoValor - valorActual[0]) / 10;
-
-    // timer.addActionListener(e -> {
-    // if (valorActual[0] != nuevoValor) {
-    // valorActual[0] += incremento;
-    // if (Math.abs(nuevoValor - valorActual[0]) < Math.abs(incremento)) {
-    // valorActual[0] = nuevoValor;
-    // timer.stop();
-    // }
-    // counter.setText(numberFormat.format(valorActual[0]));
-    // } else {
-    // timer.stop();
-    // }
-    // });
-
-    // timer.start();
-    // }
 
     @Override
     public void stopRefresh() {
