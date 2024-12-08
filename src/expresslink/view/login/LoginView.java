@@ -121,8 +121,8 @@ public class LoginView extends JFrame {
         });
 
         // TEST
-        userField.setText("ato@gmail.com");
-        passwordField.setText("toletole890");
+        userField.setText("sucursal@example.com");
+        passwordField.setText("password123");
     }
 
     private void iniciarSesion() {

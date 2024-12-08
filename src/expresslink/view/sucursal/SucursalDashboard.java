@@ -19,6 +19,7 @@ public class SucursalDashboard extends JFrame {
     private JPanel mainPanel;
     private JPanel contentPanel;
     private CardLayout cardLayout;
+    private JPanel currentPanel;
 
     private LoginView loginView;
     private Usuario usuario;
@@ -141,11 +142,12 @@ public class SucursalDashboard extends JFrame {
     }
 
     private void createContentPanels() {
+        // Crear los paneles de contenido
         contentPanel.add(createDashboardPanel(), "Dashboard");
         contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Paquete");
         contentPanel.add(createPanelWithBackButton("Pedidos Pendientes"), "Pedidos Pendientes");
-        contentPanel.add(createPanelWithBackButton("Pedidos en Transito"), "Pedidos en Transito");
-        contentPanel.add(createPanelWithBackButton("Entregas del Dia"), "Entregas del Dia");
+        contentPanel.add(new PedidosTransitoView(sucursal), "Pedidos en Transito");
+        contentPanel.add(new EntregasDiaView(sucursal), "Entregas del Dia");
         contentPanel.add(createPanelWithBackButton("Reportes"), "Reportes");
     }
 
