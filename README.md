@@ -1,119 +1,122 @@
 # ExpressLink - Sistema de Gestión de Envíos
 
 ## Descripción
-ExpressLink es un sistema de gestión logística desarrollado en Java Swing que optimiza el proceso de envío de paquetes, desde la creación hasta la entrega final. El sistema proporciona una interfaz gráfica intuitiva para gestionar todos los aspectos del proceso logístico.
+ExpressLink es un sistema de gestión logística desarrollado en Java que permite el seguimiento y control integral de envíos de paquetes. El sistema utiliza una arquitectura MVC con interfaces gráficas específicas para cada rol de usuario (Cliente, Transportista, Sucursal) e incluye funcionalidades como seguimiento en tiempo real, gestión de entregas, y generación de reportes.
 
 ## Desarrolladores
 - Ignacia Miranda
 - Adolfo Toledo
 
 ## Tecnologías Utilizadas
-- Java
-- Swing (GUI)
-- MySQL/MariaDB
-- JUnit (Testing)
+- Java 17
+- Java Swing para interfaces gráficas
+- MySQL/MariaDB para persistencia de datos
+- JUnit para pruebas unitarias
 
-## Características Principales
-- Sistema de seguimiento en tiempo real
-- Cálculo automático de costos de envío
-- Gestión de rutas optimizada
-- Sistema de notificaciones integrado
-- Generación de reportes y estadísticas
-- Sistema de respaldo de información
-- Gestión multiusuario con roles diferenciados
+## Características Implementadas
 
-## Arquitectura del Sistema
+### Módulo Cliente
+- Seguimiento de envíos en tiempo real
+- Historial de pedidos
+- Panel de pedidos activos
+- Gestión de perfil
 
-### Módulos Principales
-1. **Gestión de Usuarios**
-   - Autenticación y autorización
-   - Perfiles: Empresa, Cliente, Transportista, Sucursal
+### Módulo Sucursal
+- Creación y gestión de pedidos
+- Asignación de transportistas
+- Monitoreo de entregas del día
+- Panel de informes y estadísticas
+- Gestión de paquetes en tránsito
 
-2. **Gestión de Pedidos**
-   - Creación y seguimiento de envíos
-   - Asignación de transportistas
-   - Cálculo de costos
-   - Estados del pedido
+### Módulo Transportista
+- Visualización de pedidos asignados
+- Registro de entregas
+- Control de estados de entrega
+- Historial de entregas realizadas
 
-3. **Gestión de Sucursales**
-   - Inventario de paquetes
-   - Gestión de transportistas
-   - Control de entregas y recogidas
+### Funcionalidades Generales
+- Sistema de autenticación por roles
+- Cálculo automático de costos basado en dimensiones
+- Registro detallado de eventos (logs)
+- Dashboards en tiempo real
+- Validación de datos y manejo de errores
 
-4. **Sistema de Reportes**
-   - Análisis de rendimiento
-   - Estadísticas de envíos
-   - Reportes financieros
+## Estados del Paquete
+- PENDIENTE: Paquete registrado, pendiente de asignación
+- EN_TRANSITO: En proceso de entrega
+- ENTREGADO: Entrega completada exitosamente
+- CANCELADO: Entrega cancelada
+
+## Base de Datos
+### Tablas Principales
+- usuario
+- sucursal
+- transportista
+- vehiculo
+- paquete
+- log_paquete
+- log_sucursal
+- log_transportista
+- balance_sucursal
 
 ## Estructura del Proyecto
 ```
 expresslink/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── controllers/
-│   │   │   ├── models/
-│   │   │   ├── views/
-│   │   │   └── utils/
-│   │   └── resources/
-│   └── test/
-├── docs/
-│   ├── diagrams/
-│   └── specifications/
-└── database/
-    └── scripts/
+├── model/
+│   ├── Entidad.java
+│   ├── Persona.java
+│   ├── Usuario.java
+│   ├── Sucursal.java
+│   ├── Transportista.java
+│   ├── Paquete.java
+│   └── ...
+├── controllers/
+│   ├── auth/
+│   ├── cliente/
+│   ├── sucursal/
+│   └── transportista/
+├── view/
+│   ├── cliente/
+│   ├── sucursal/
+│   ├── transportista/
+│   └── components/
+└── utils/
+    └── DatabaseConnection.java
 ```
 
-## Estados del Pedido
-1. INGRESADO
-2. RECOLECTADO
-3. EN_TRANSITO
-4. EN_SUCURSAL_DESTINO
-5. ASIGNADO_TRANSPORTISTA
-6. EN_CAMINO
-7. ENTREGADO
-8. NO_ENTREGADO
-9. CANCELADO
+## Configuración e Instalación
+1. Requisitos previos:
+   - JDK 17 o superior
+   - MySQL/MariaDB
+   - IDE Java (NetBeans/Eclipse/IntelliJ)
 
-## Base de Datos
-El sistema utiliza una base de datos relacional con las siguientes tablas principales:
-- Usuarios
-- Pedidos
-- Sucursales
-- Vehículos
-- Transportistas
-- Tracking
+2. Pasos de instalación:
+   ```bash
+   git clone [URL del repositorio]
+   cd expresslink
+   ```
 
-## Configuración del Entorno de Desarrollo
+3. Configurar la base de datos:
+   - Importar el script SQL proporcionado
+   - Configurar credenciales en DatabaseConnection.java
 
-### Requisitos Previos
-- JDK 17 o superior
-- IDE (NetBeans/Eclipse/IntelliJ)
-- MySQL/MariaDB
-- Git
+4. Compilar y ejecutar el proyecto desde el IDE
 
-### Pasos de Instalación
-1. Clonar el repositorio
-2. Importar el proyecto en el IDE
-3. Configurar la conexión a la base de datos
-4. Ejecutar los scripts de base de datos
-5. Compilar y ejecutar
+## Contribución
+Para contribuir al proyecto:
+1. Crear un fork del repositorio
+2. Crear una rama para nuevas funcionalidades (`git checkout -b feature/nueva-funcionalidad`)
+3. Realizar cambios y commits
+4. Enviar pull request
 
-## Convenciones de Código
-- Nomenclatura en español
-- Nombres de clases en PascalCase
-- Nombres de métodos y variables en camelCase
-- Documentación en español
-
-## Testing
-- Pruebas unitarias con JUnit
-- Pruebas de integración para módulos críticos
-- Pruebas de interfaz de usuario
-
-## Contacto
-Para consultas sobre el desarrollo:
-- Ignacia Miranda: [email protegido]
-- Adolfo Toledo: [email protegido]
+## Licencia
+Este proyecto es software privado desarrollado para la Universidad de La Serena.
 
 ## Estado del Proyecto
-Proyecto en desarrollo activo - Universidad de La Serena, 2024
+Versión 1.0 completada - 2024
+Universidad de La Serena
+
+## Contacto
+Para consultas sobre el proyecto:
+- Ignacia Miranda 
+- Adolfo Toledo
