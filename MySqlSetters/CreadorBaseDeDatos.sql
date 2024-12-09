@@ -89,7 +89,7 @@ CREATE TABLE LOG_SUCURSAL (
     tipo_evento ENUM('CREACION', 'ACTUALIZACION', 'ELIMINACION'),
     descripcion VARCHAR(255),
     fecha DATETIME,
-    metadata JSON,
+    metadata JSON NULL,
     usuario_id INT,
     FOREIGN KEY (sucursal_id) REFERENCES SUCURSAL(id),
     FOREIGN KEY (usuario_id) REFERENCES USUARIO(id)
@@ -102,7 +102,7 @@ CREATE TABLE LOG_TRANSPORTISTA (
     paquete_id INT,
     descripcion VARCHAR(255),
     fecha DATETIME,
-    metadata JSON,
+    metadata JSON NULL,
     FOREIGN KEY (transportista_id) REFERENCES TRANSPORTISTA(id),
     FOREIGN KEY (paquete_id) REFERENCES PAQUETE(id)
 );
@@ -114,7 +114,7 @@ CREATE TABLE LOG_PAQUETE (
     estado_nuevo ENUM('PENDIENTE', 'EN_TRANSITO', 'ENTREGADO', 'CANCELADO'),
     descripcion VARCHAR(255),
     fecha DATETIME,
-    metadata JSON,
+    metadata JSON NULL,
     usuario_id INT,
     FOREIGN KEY (paquete_id) REFERENCES PAQUETE(id),
     FOREIGN KEY (usuario_id) REFERENCES USUARIO(id)
