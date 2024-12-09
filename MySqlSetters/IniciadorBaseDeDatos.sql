@@ -18,9 +18,9 @@ VALUES
 -- Crear vehículos
 INSERT INTO VEHICULO (patente, capacidad_volumen)
 VALUES 
-    ('ABC-1234', 15.5),
-    ('DEF-5678', 20.0),
-    ('GHI-9101', 12.3);
+    ('ABC-1234', 0),
+    ('DEF-5678', 0),
+    ('GHI-9101', 0);
 
 -- Crear transportistas
 INSERT INTO TRANSPORTISTA (usuario_id, licencia, disponible, sucursal_id, vehiculo_id)
