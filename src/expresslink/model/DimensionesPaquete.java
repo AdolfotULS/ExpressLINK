@@ -9,27 +9,39 @@ public class DimensionesPaquete {
     private double peso;
 
     public DimensionesPaquete(String input) {
-        input = input.replace(",", ".").replace("kg", "");
-
-        String[] parts = input.split("x");
-
-        this.ancho = 0;
-        this.largo = 0;
-        this.alto = 0;
-        this.peso = 0;
+        if (input == null || input.trim().isEmpty()) {
+            setDefaultValues();
+            return;
+        }
 
         try {
-            if (parts.length > 0)
-                this.ancho = Double.parseDouble(parts[0].trim());
-            if (parts.length > 1)
-                this.largo = Double.parseDouble(parts[1].trim());
-            if (parts.length > 2)
-                this.alto = Double.parseDouble(parts[2].trim());
-            if (parts.length > 3)
-                this.peso = Double.parseDouble(parts[3].trim());
-        } catch (NumberFormatException e) {
-            // En caso de error, se mantienen los valores predeterminados (0)
-            System.err.println("Error al parsear las dimensiones o el peso. Se usarán valores predeterminados.");
+            // Separar dimensiones del peso
+            String[] partes = input.split(",");
+            if (partes.length < 2) {
+                setDefaultValues();
+                return;
+            }
+
+            // Procesar dimensiones
+            String[] dimensiones = partes[0].split("x");
+            if (dimensiones.length < 3) {
+                setDefaultValues();
+                return;
+            }
+
+            // Convertir dimensiones
+            this.ancho = Double.parseDouble(dimensiones[0].trim());
+            this.largo = Double.parseDouble(dimensiones[1].trim());
+            this.alto = Double.parseDouble(dimensiones[2].trim());
+
+            // Procesar peso
+            String pesoStr = partes[1].replace("kg", "").trim();
+            this.peso = Double.parseDouble(pesoStr);
+
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Error al parsear las dimensiones o el peso: " + input);
+            System.err.println("Error específico: " + e.getMessage());
+            setDefaultValues();
         }
     }
 
@@ -95,5 +107,13 @@ public class DimensionesPaquete {
     public DimensionesPaquete peso(double peso) {
         setPeso(peso);
         return this;
+    }
+
+    private void setDefaultValues() {
+        this.ancho = 0;
+        this.largo = 0;
+        this.alto = 0;
+        this.peso = 0;
+        System.err.println("Error al parsear las dimensiones o el peso. Se usarán valores predeterminados.");
     }
 }

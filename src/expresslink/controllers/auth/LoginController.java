@@ -2,6 +2,7 @@ package expresslink.controllers.auth;
 
 import expresslink.model.*;
 import expresslink.view.cliente.*;
+import expresslink.view.empresa.EmpresaDashboard;
 import expresslink.view.login.*;
 import expresslink.view.transportista.*;
 import expresslink.view.sucursal.*;
@@ -87,8 +88,7 @@ public class LoginController {
                     new SucursalDashboard(usuarioActual, vista).setVisible(true);
                     break;
                 case EMPRESA:
-                    mostrarInformacion("Dashboard de administrador en desarrollo",
-                            "Administrador");
+                    new EmpresaDashboard(usuarioActual, vista).setVisible(true);
                     break;
                 default:
                     mostrarError("Tipo de usuario no soportado");

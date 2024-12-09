@@ -53,7 +53,7 @@ public class SucursalDashboard extends JFrame {
     private void inicializarGUI() {
         setTitle("Express Link - " + sucursal.getNombre() + " [" + sucursal.getCiudad() + "]");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 700);
+        setSize(1600, 900);
         setLocationRelativeTo(null);
 
         mainPanel = new JPanel(new BorderLayout());
@@ -94,8 +94,8 @@ public class SucursalDashboard extends JFrame {
         String[] menuItems = {
                 "Informacion General", // Cambiado de "Dashboard"
                 "Nuevo Paquete",
-                "Pedidos Pendientes",
-                "Pedidos en Transito",
+                "Gestion Paquetes",
+                "Paquetes en Transito",
                 "Entregas del Dia",
                 "Reportes"
         };
@@ -146,61 +146,9 @@ public class SucursalDashboard extends JFrame {
         // Crear los paneles de contenido
         contentPanel.add(new InformacionGeneralView(sucursal), "Dashboard");
         contentPanel.add(new NuevoPedidoView(usuario, sucursal), "Nuevo Paquete");
-        contentPanel.add(new GestionPaquetesView(usuario, sucursal), "Pedidos Pendientes");
-        contentPanel.add(new PedidosTransitoView(sucursal), "Pedidos en Transito");
+        contentPanel.add(new GestionPaquetesView(usuario, sucursal), "Gestion Paquetes");
+        contentPanel.add(new PedidosTransitoView(sucursal), "Paquetes en Transito");
         contentPanel.add(new EntregasDiaView(sucursal), "Entregas del Dia");
         contentPanel.add(new ReportesView(sucursal), "Reportes");
-    }
-
-    private JPanel createPanelWithBackButton(String panelName) {
-        JPanel panel = new JPanel(new BorderLayout(20, 20));
-        panel.setBackground(BACKGROUND_COLOR);
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        // Barra superior
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(PRIMARY_COLOR);
-        headerPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-
-        JLabel titleLabel = new JLabel(panelName);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        titleLabel.setForeground(Color.WHITE);
-        headerPanel.add(titleLabel, BorderLayout.WEST);
-
-        // Si es "Pedidos Pendientes", agregamos elementos adicionales
-        if (panelName.equals("Pedidos Pendientes")) {
-            String[] columnNames = { "N° Pedido", "Destinatario", "Estado", "Acción" };
-            Object[][] data = {
-                    { "#2024-001", "Juan Pérez", "Pendiente", "Ver detalles" },
-                    { "#2024-002", "María García", "En Ruta", "Ver detalles" }
-            };
-
-            JTable table = new JTable(data, columnNames);
-            table.setRowHeight(35);
-            table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-
-            JScrollPane scrollPane = new JScrollPane(table);
-            scrollPane.setBorder(BorderFactory.createEmptyBorder());
-            panel.add(scrollPane, BorderLayout.CENTER);
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            JButton verMasBtn = new JButton("VER MAS INFORMACIÓN");
-            JButton editarBtn = new JButton("EDITAR");
-
-            // Estilo para los botones
-            for (JButton btn : new JButton[] { verMasBtn, editarBtn }) {
-                btn.setBackground(Color.WHITE);
-                btn.setForeground(PRIMARY_COLOR);
-                btn.setFocusPainted(false);
-                btn.setBorder(new EmptyBorder(8, 15, 8, 15));
-                btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-                buttonPanel.add(btn);
-            }
-            headerPanel.add(buttonPanel, BorderLayout.EAST);
-        }
-
-        panel.add(headerPanel, BorderLayout.NORTH);
-        return panel;
     }
 }
