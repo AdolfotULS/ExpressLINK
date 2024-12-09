@@ -1,79 +1,81 @@
-//Chibi
-
 package expresslink.model;
 
-import expresslink.model.enums.TipoUsuario;
+import expresslink.model.*;
+import expresslink.model.enums.*;
 
-public class Usuario {
-    private int id;
-    private String nombre;
-    private String correo;
-    private String contrasenia;
+public class Usuario extends Persona {
+    private String password;
     private String telefono;
-    private TipoUsuario rol;
+    private RolUsuario rol;
+    private Sucursal sucursal; // Relación con Sucursal
 
     // Constructor
-    public Usuario(int id, String nombre, String correo, String contrasenia, String telefono, TipoUsuario rol) {
-        this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contrasenia = contrasenia;
+    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol,
+            Sucursal sucursal) {
+        super(id, nombre, email);
+        this.password = password;
+        this.telefono = telefono;
+        this.rol = rol;
+        this.sucursal = sucursal;
+    }
+
+    // Constructor para registro
+    public Usuario(String nombre, String email, String password, String telefono, RolUsuario rol) {
+        super(0, nombre, email);
+        this.password = password;
         this.telefono = telefono;
         this.rol = rol;
     }
 
-    // Getters
-    public int getId() {
-        return id;
+    public Usuario(int id, String nombre, String email, String password, String telefono, RolUsuario rol) {
+        super(id, nombre, email);
+        this.password = password;
+        this.telefono = telefono;
+        this.rol = rol;
     }
 
-    public String getNombre() {
-        return nombre;
+    // Getters and Setters
+    public String getPassword() {
+        return password;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTelefono() {
         return telefono;
     }
 
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    public RolUsuario getRol() {
+        return rol;
+    }
+
+    public void setRol(RolUsuario rol) {
+        this.rol = rol;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", correo='" + correo + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", rol=" + rol +
-                '}';
+        return "{" +
+                " id=" + super.getId() + "," +
+                " password='" + getPassword() + "'" +
+                ", telefono='" + getTelefono() + "'" +
+                ", rol='" + getRol() + "'" +
+                ", sucursal='" + getSucursal() + "'" +
+                "}";
     }
 
 }

@@ -1,96 +1,156 @@
 package expresslink.view.login;
 
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
+import expresslink.model.enums.*;
 import java.awt.*;
+import java.awt.event.*;
+import expresslink.controllers.auth.LoginController;
 
 public class LoginView extends JFrame {
+    private JTextField userField;
+    private JPasswordField passwordField;
+    public LoginController controlador;
 
     public LoginView() {
-        // Configuracion de la ventana principal
-        setTitle("Inicio de Sesion");
+        inicializarGUI();
+        this.controlador = new LoginController(this);
+    }
+
+    private void inicializarGUI() {
+        // Configuración de la ventana principal
+        setTitle("Inicio de Sesión");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Creacion del panel principal
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(240, 240, 255)); // Color de fondo similar
-        mainPanel.setLayout(new GridBagLayout()); // Usamos GridBagLayout para centrar el panel interno
-        add(mainPanel);
+        // Creación del panel principal
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setBackground(new Color(240, 240, 255));
+        panelPrincipal.setLayout(new GridBagLayout());
+        add(panelPrincipal);
 
-        // Panel para el formulario de inicio de sesion
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridBagLayout());
-        loginPanel.setBackground(Color.WHITE);
-        loginPanel.setPreferredSize(new Dimension(300, 200));
-        loginPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+        // Panel para el formulario de inicio de sesión
+        JPanel panelLogin = new JPanel();
+        panelLogin.setLayout(new GridBagLayout());
+        panelLogin.setBackground(Color.WHITE);
+        panelLogin.setPreferredSize(new Dimension(300, 200));
+        panelLogin.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 10, 5, 10);
 
-        // Etiqueta del titulo
-        JLabel titleLabel = new JLabel("Sistema de Envios", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setOpaque(true);
-        titleLabel.setBackground(new Color(33, 150, 243)); // Color de fondo azul
-        titleLabel.setPreferredSize(new Dimension(280, 30));
+        // Etiqueta del título
+        JLabel etiquetaTitulo = new JLabel("Sistema de Envíos", JLabel.CENTER);
+        etiquetaTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        etiquetaTitulo.setForeground(Color.WHITE);
+        etiquetaTitulo.setOpaque(true);
+        etiquetaTitulo.setBackground(new Color(33, 150, 243));
+        etiquetaTitulo.setPreferredSize(new Dimension(280, 30));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        loginPanel.add(titleLabel, gbc);
+        panelLogin.add(etiquetaTitulo, gbc);
 
         // Campo de texto para el usuario
-        JTextField userField = new JTextField(15);
-        userField.setBorder(BorderFactory.createTitledBorder("Usuario"));
-
+        userField = new JTextField(15);
+        userField.setBorder(BorderFactory.createTitledBorder("Email"));
         gbc.gridy = 1;
         gbc.gridwidth = 2;
-        loginPanel.add(userField, gbc);
+        panelLogin.add(userField, gbc);
 
         // Campo de texto para la contraseña
-        JPasswordField passwordField = new JPasswordField(15);
+        passwordField = new JPasswordField(15);
         passwordField.setBorder(BorderFactory.createTitledBorder("Contraseña"));
-
         gbc.gridy = 2;
-        loginPanel.add(passwordField, gbc);
+        panelLogin.add(passwordField, gbc);
 
-        // Boton de inicio de sesion
-        JButton loginButton = new JButton("Iniciar Sesion");
-        loginButton.setBackground(new Color(33, 150, 243));
-        loginButton.setForeground(Color.WHITE);
+        // Botón de inicio de sesión
+        JButton botonLogin = new JButton("Iniciar Sesión");
+        botonLogin.setBackground(new Color(33, 150, 243));
+        botonLogin.setForeground(Color.WHITE);
+        botonLogin.addActionListener(e -> iniciarSesion());
 
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        loginPanel.add(loginButton, gbc);
+        panelLogin.add(botonLogin, gbc);
 
-        // Enlaces para "Olvide mi contraseña" y "Registrarse"
-        JLabel forgotPasswordLabel = new JLabel("Olvide mi contraseña", JLabel.CENTER);
-        forgotPasswordLabel.setForeground(Color.BLUE);
-        forgotPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // Enlaces para "Olvidé mi contraseña" y "Registrarse"
+        JLabel etiquetaOlvidePass = new JLabel("Olvidé mi contraseña", JLabel.CENTER);
+        etiquetaOlvidePass.setForeground(Color.BLUE);
+        etiquetaOlvidePass.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        etiquetaOlvidePass.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                recuperarContrasena();
+            }
+        });
 
-        JLabel registerLabel = new JLabel("Registrarse", JLabel.CENTER);
-        registerLabel.setForeground(Color.BLUE);
-        registerLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel etiquetaRegistro = new JLabel("Registrarse", JLabel.CENTER);
+        etiquetaRegistro.setForeground(Color.BLUE);
+        etiquetaRegistro.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        etiquetaRegistro.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                registrarUsuario();
+            }
+        });
 
         gbc.gridy = 4;
         gbc.gridwidth = 1;
-        loginPanel.add(forgotPasswordLabel, gbc);
+        panelLogin.add(etiquetaOlvidePass, gbc);
 
         gbc.gridx = 1;
-        loginPanel.add(registerLabel, gbc);
+        panelLogin.add(etiquetaRegistro, gbc);
 
         // Agregar el panel de login al panel principal
-        mainPanel.add(loginPanel);
+        panelPrincipal.add(panelLogin);
 
-        // Hacer visible la ventana
-        setVisible(true);
+        // Agregar KeyListener para el campo de contraseña
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    iniciarSesion();
+                }
+            }
+        });
     }
 
-    public static void main(String[] args) {
-        // Ejecutar la interfaz en el hilo de eventos de Swing
-        SwingUtilities.invokeLater(LoginView::new);
+    private void iniciarSesion() {
+        if (controlador != null) {
+            controlador.manejarInicioSesion(
+                    userField.getText(),
+                    new String(passwordField.getPassword()));
+        }
     }
+
+    private void recuperarContrasena() {
+        if (controlador != null) {
+            controlador.manejarRecuperarContrasena();
+        }
+    }
+
+    private void registrarUsuario() {
+        if (controlador != null) {
+            controlador.manejarRegistro();
+        }
+    }
+
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void mostrarExito(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void limpiarCampos() {
+        userField.setText("");
+        passwordField.setText("");
+    }
+}

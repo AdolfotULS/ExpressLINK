@@ -1,71 +1,40 @@
-//Chibi
-
 package expresslink.model;
 
-import expresslink.model.enums.TipoVehiculo;
-
 public class Vehiculo {
-    private String placa;
-    private TipoVehiculo tipo;
-    private double capacidadMaxima;
-    private boolean enServicio;
-    private Transportista conductor;
+    private int id;
+    private String patente;
+    private double capacidadVolumen;
 
-    public void asignarConductor(Transportista conductor) {
-        this.conductor = conductor;
-        this.enServicio = true; // Opcional, si deseas marcar el vehículo como "en servicio" al asignar un
-                                // conductor
+    // Constructor
+
+    public Vehiculo(int id, String patente, double capacidadVolumen) {
+        this.id = id;
+        this.patente = patente;
+        this.capacidadVolumen = capacidadVolumen;
     }
 
-    public Vehiculo(String placa, TipoVehiculo tipo, double capacidadMaxima, boolean enServicio,
-            Transportista conductor) {
-        this.placa = placa;
-        this.tipo = tipo;
-        this.capacidadMaxima = capacidadMaxima;
-        this.enServicio = enServicio;
-        this.conductor = conductor;
+    public int getId() {
+        return id;
     }
 
-    // Get
-    public String getPlaca() {
-        return placa;
+    public String getPatente() {
+        return patente;
     }
 
-    public TipoVehiculo getTipo() {
-        return tipo;
+    public double getCapacidadVolumen() {
+        return capacidadVolumen;
     }
 
-    public double getCapacidadMaxima() {
-        return capacidadMaxima;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public boolean isEnServicio() {
-        return enServicio;
+    public void setPatente(String patente) {
+        this.patente = patente;
     }
 
-    public Transportista getConductor() {
-        return conductor;
-    }
-
-    // Set
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public void setTipo(TipoVehiculo tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setCapacidadMaxima(double capacidadMaxima) {
-        this.capacidadMaxima = capacidadMaxima;
-    }
-
-    public void setEnServicio(boolean enServicio) {
-        this.enServicio = enServicio;
-    }
-
-    public void setConductor(Transportista conductor) {
-        this.conductor = conductor;
+    public void setCapacidadVolumen(double capacidadVolumen) {
+        this.capacidadVolumen = capacidadVolumen;
     }
 
 }

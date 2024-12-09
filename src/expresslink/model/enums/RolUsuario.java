@@ -1,8 +1,8 @@
 package expresslink.model.enums;
 
-public enum TipoUsuario { // Roles del usuario
+public enum RolUsuario { // Roles del usuario
     CLIENTE,
     TRANSPORTISTA,
     SUCURSAL,
-    ADMIN
+    EMPRESA
 }

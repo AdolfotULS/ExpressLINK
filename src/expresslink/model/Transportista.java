@@ -1,69 +1,65 @@
-//Chibi
-
 package expresslink.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import expresslink.model.enums.TipoUsuario;
+import expresslink.model.*;
+import expresslink.model.enums.*;
 
 public class Transportista extends Usuario {
     private String licencia;
     private boolean disponible;
-    private List<Pedido> pedidosActuales;
-    private Vehiculo vehiculoAsignado;
+    private Vehiculo vehiculo;
 
     // Constructor
-    public Transportista(int id, String nombre, String correo, String contrasenia, String telefono, String licencia, boolean disponible) {
-        super(id, nombre, correo, contrasenia, telefono, TipoUsuario.TRANSPORTISTA); // Llama al constructor de la clase padre
+
+    public Transportista(int id, String nombre, String email, String password, String telefono, RolUsuario rol,
+            Sucursal sucursal,
+            String licencia, boolean disponible, Vehiculo vehiculo) {
+        super(id, nombre, email, password, telefono, rol, sucursal);
+        if (licencia == null || licencia.isEmpty()) {
+            throw new IllegalArgumentException("La licencia no puede ser nula o vacía.");
+        }
         this.licencia = licencia;
         this.disponible = disponible;
-        this.pedidosActuales = new ArrayList<>(); // Inicializa la lista
+        this.vehiculo = vehiculo;
     }
 
-    // Método para asignar un pedido
-    public void asignarPedido(Pedido pedido) {
-        if (pedido != null) {
-            pedidosActuales.add(pedido);
-            disponible = false; // El transportista no está disponible mientras tiene pedidos
-        }
-    }
-
-    // Método para completar un pedido
-    public void completarPedido(Pedido pedido) {
-        pedidosActuales.remove(pedido);
-        if (pedidosActuales.isEmpty()) {
-            disponible = true; // Si no hay más pedidos, el transportista está disponible
-        }
-    }
-
-    // Getters
+    // Getters y Setters
     public String getLicencia() {
         return licencia;
+    }
+
+    public void setLicencia(String licencia) {
+        if (licencia == null || licencia.isEmpty()) {
+            throw new IllegalArgumentException("La licencia no puede ser nula o vacía.");
+        }
+        this.licencia = licencia;
     }
 
     public boolean isDisponible() {
         return disponible;
     }
 
-    public List<Pedido> getPedidosActuales() {
-        return pedidosActuales;
-    }
-
-    public Vehiculo getVehiculoAsignado() {
-        return vehiculoAsignado;
-    }
-
-    // Setters
-    public void setLicencia(String licencia) {
-        this.licencia = licencia;
-    }
-
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
-    public void setVehiculoAsignado(Vehiculo vehiculoAsignado) {
-        this.vehiculoAsignado = vehiculoAsignado;
+    public Vehiculo getVehiculo() {
+        return vehiculo != null ? vehiculo : null;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo != null ? vehiculo : null;
+    }
+
+    @Override
+    public String toString() {
+        return "Transportista{" +
+                "id=" + getId() +
+                ", nombre='" + getNombre() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", telefono='" + getTelefono() + '\'' +
+                ", licencia='" + licencia + '\'' +
+                ", disponible=" + disponible +
+                ", vehiculo=" + (vehiculo != null ? vehiculo.getPatente() : "Sin asignar") +
+                '}';
     }
 }
